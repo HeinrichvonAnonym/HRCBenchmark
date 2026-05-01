@@ -1,0 +1,18 @@
+Tue Apr 21 02:28:22 2026
+WARNING: Could not find decoder for resource '/home/heinrich/roboLab/python/benchmark/asset/scene/hospital_bed/model_2/collada/Sketchfab_2023_08_08_21_08_35.dae'
+
+Tue Apr 21 02:29:31 2026
+WARNING: Could not find decoder for resource '/home/heinrich/roboLab/python/benchmark/asset/scene/hospital_bed/model_2/collada/Sketchfab_2023_08_08_21_08_35.dae'
+
+Tue Apr 21 03:32:56 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 10. The simulation is unstable. Time = 0.0750.
+
+Tue Apr 21 03:34:36 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 10. The simulation is unstable. Time = 0.0750.
+
+Tue Apr 21 03:34:47 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 10. The simulation is unstable. Time = 0.0750.
+
+Tue Apr 21 03:34:47 2026
+WARNING: Nan, Inf or huge value in QACC at DOF 10. The simulation is unstable. Time = 0.0750.
+

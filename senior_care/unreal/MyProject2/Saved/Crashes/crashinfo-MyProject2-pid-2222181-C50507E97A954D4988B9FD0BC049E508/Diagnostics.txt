@@ -1,0 +1,32 @@
+Generating report for minidump
+
+Application version 5.1.0.0
+ ... built from changelist 23058290
+
+OS version Linux 5.15.0-rt17 (network name: heinrich-System-Product-Name)
+Running 14 x86_64 processors (20 logical cores)
+Exception was "SIGSEGV: invalid attempt to write memory at address 0x0000000000000003"
+
+<SOURCE START>
+<SOURCE END>
+
+<CALLSTACK START>
+libUnrealEditor-Engine.so!FTypedElementInternalData::CheckNoExternalReferencesOnDestruction() const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/TypedElementFramework/Public/Elements/Framework/TypedElementData.h:276]
+libUnrealEditor-Engine.so!TTypedElementInternalDataStore<FActorElementData>::RemoveDataForElement(int, FTypedElementInternalData const*) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/TypedElementFramework/Public/Elements/Framework/TypedElementData.h:563]
+libUnrealEditor-Engine.so!UTypedElementRegistry::TRegisteredElementType<FActorElementData, true>::ProcessDeferredElementsToRemove() [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/TypedElementFramework/Public/Elements/Framework/TypedElementRegistry.h:498]
+libUnrealEditor-TypedElementFramework.so!UTypedElementRegistry::ProcessDeferredElementsToDestroy() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/TypedElementFramework/Private/Elements/Framework/TypedElementRegistry.cpp:155]
+libUnrealEditor-TypedElementFramework.so!UTypedElementRegistry::OnEndFrame() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/TypedElementFramework/Private/Elements/Framework/TypedElementRegistry.cpp:334]
+libUnrealEditor-TypedElementFramework.so!TBaseUObjectMethodDelegateInstance<false, UTypedElementRegistry, void (), FDefaultDelegateUserPolicy>::ExecuteIfSafe() const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h:616]
+UnrealEditor!void TMulticastDelegateBase<FDefaultDelegateUserPolicy>::Broadcast<IBaseDelegateInstance<void (), FDefaultDelegateUserPolicy>, TDelegate<void (), FDefaultDelegateUserPolicy> >() const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/MulticastDelegateBase.h:178]
+UnrealEditor!FEngineLoop::Tick() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/LaunchEngineLoop.cpp:5621]
+UnrealEditor!GuardedMain(char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/Launch.cpp:204]
+libUnrealEditor-UnixCommonStartup.so!CommonUnixMain(int, char**, int (*)(char16_t const*), void (*)()) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Unix/UnixCommonStartup/Private/UnixCommonStartup.cpp:269]
+libc.so.6!UnknownFunction(0x29d8f)
+libc.so.6!__libc_start_main(+0x7f)
+UnrealEditor!_start()
+
+<CALLSTACK END>
+
+0 loaded modules
+
+Report end!

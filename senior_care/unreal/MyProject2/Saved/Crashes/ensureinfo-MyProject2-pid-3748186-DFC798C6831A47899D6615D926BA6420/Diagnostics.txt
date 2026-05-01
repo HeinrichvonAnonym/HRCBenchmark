@@ -1,0 +1,71 @@
+Generating report for minidump
+
+Application version 5.1.0.0
+ ... built from changelist 23058290
+
+OS version Linux 5.15.0-rt17 (network name: heinrich-System-Product-Name)
+Running 14 x86_64 processors (20 logical cores)
+Exception was "Ensure condition failed: false  [File:./Editor/UnrealEd/Private/ObjectTools.cpp] [Line: 3543] "
+
+<SOURCE START>
+<SOURCE END>
+
+<CALLSTACK START>
+libUnrealEditor-UnrealEd.so!ObjectTools::ForceDeleteObjects(TArray<UObject*, TSizedDefaultAllocator<32> > const&, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/ObjectTools.cpp:3537]
+libUnrealEditor-UnrealEd.so!UEditorAssetSubsystem::DeleteDirectory(FString const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Subsystems/EditorAssetSubsystem.cpp:804]
+libUnrealEditor-EditorScriptingUtilities.so!UEditorAssetLibrary::execDeleteDirectory(UObject*, FFrame&, void*) [/mnt/horde/++UE5/Sync/Engine/Source/../Plugins/Editor/EditorScriptingUtilities/Intermediate/Build/Linux/B4D820EA/UnrealEditor/Inc/EditorScriptingUtilities/UHT/EditorAssetLibrary.gen.cpp:245]
+libUnrealEditor-CoreUObject.so!UFunction::Invoke(UObject*, FFrame&, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/Class.cpp:6455]
+libUnrealEditor-CoreUObject.so!UObject::ProcessEvent(UFunction*, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/ScriptCore.cpp:2114]
+libUnrealEditor-PythonScriptPlugin.so!PyUtil::InvokeFunctionCall(UObject*, UFunction const*, void*, char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyUtil.cpp:526]
+libUnrealEditor-PythonScriptPlugin.so!FPyWrapperObject::CallFunction_Impl(UObject*, _object*, _object*, PyGenUtil::FGeneratedWrappedFunction const&, char const*, char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp:303]
+libUnrealEditor-PythonScriptPlugin.so!FPyWrapperObject::CallFunction(_typeobject*, _object*, _object*, PyGenUtil::FGeneratedWrappedFunction const&, char const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp:207]
+libpython3.9.so.1.0!_PyObject_MakeTpCall(+0x7b)
+libpython3.9.so.1.0!UnknownFunction(0x1376b6)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x7297)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0xf7)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x72d9)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x736b)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x736b)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libpython3.9.so.1.0!UnknownFunction(0xeb069)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x736b)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0xf7)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x7217)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libpython3.9.so.1.0!_PyObject_FastCallDictTstate(+0xd0)
+libpython3.9.so.1.0!_PyObject_Call_Prepend(+0x63)
+libpython3.9.so.1.0!UnknownFunction(0x1138d4)
+libpython3.9.so.1.0!UnknownFunction(0x1105e7)
+libpython3.9.so.1.0!_PyObject_MakeTpCall(+0x7b)
+libpython3.9.so.1.0!UnknownFunction(0x1376b6)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x736b)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libUnrealEditor-PythonScriptPlugin.so!decltype(auto) UE::Core::Private::Tuple::TTupleBase<TIntegerSequence<unsigned int> >::ApplyAfter<PySlateUtil::RegisterSlateTickCallback(FSlateApplication::FSlateTickEvent&, TArray<FDelegateHandle, TSizedDefaultAllocator<32> >&, _object*)::$_99&, float&>(PySlateUtil::RegisterSlateTickCallback(FSlateApplication::FSlateTickEvent&, TArray<FDelegateHandle, TSizedDefaultAllocator<32> >&, _object*)::$_99&&&, float&&&) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Templates/Tuple.h:327]
+libUnrealEditor-PythonScriptPlugin.so!TBaseFunctorDelegateInstance<void (float), FDefaultDelegateUserPolicy, PySlateUtil::RegisterSlateTickCallback(FSlateApplication::FSlateTickEvent&, TArray<FDelegateHandle, TSizedDefaultAllocator<32> >&, _object*)::$_99>::ExecuteIfSafe(float) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h:845]
+libUnrealEditor-Slate.so!void TMulticastDelegateBase<FDefaultDelegateUserPolicy>::Broadcast<IBaseDelegateInstance<void (float), FDefaultDelegateUserPolicy>, TDelegate<void (float), FDefaultDelegateUserPolicy>, float>(float) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/MulticastDelegateBase.h:178]
+libUnrealEditor-Slate.so!FSlateApplication::TickAndDrawWidgets(float) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:1643]
+libUnrealEditor-Slate.so!FSlateApplication::Tick(ESlateTickType) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:1493]
+UnrealEditor!FEngineLoop::Tick() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/LaunchEngineLoop.cpp:5490]
+UnrealEditor!GuardedMain(char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/Launch.cpp:204]
+libUnrealEditor-UnixCommonStartup.so!CommonUnixMain(int, char**, int (*)(char16_t const*), void (*)()) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Unix/UnixCommonStartup/Private/UnixCommonStartup.cpp:269]
+libc.so.6!UnknownFunction(0x29d8f)
+libc.so.6!__libc_start_main(+0x7f)
+UnrealEditor!_start()
+
+<CALLSTACK END>
+
+0 loaded modules
+
+Report end!

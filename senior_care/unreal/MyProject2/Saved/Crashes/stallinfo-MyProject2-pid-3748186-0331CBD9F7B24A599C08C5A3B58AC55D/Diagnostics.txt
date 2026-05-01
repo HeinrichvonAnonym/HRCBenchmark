@@ -1,0 +1,77 @@
+Generating report for minidump
+
+Application version 5.1.0.0
+ ... built from changelist 23058290
+
+OS version Linux 5.15.0-rt17 (network name: heinrich-System-Product-Name)
+Running 14 x86_64 processors (20 logical cores)
+Exception was "AsyncCompilationHelpers::FinishCompilation"
+
+<SOURCE START>
+<SOURCE END>
+
+<CALLSTACK START>
+libUnrealEditor-Core.so!ThreadStackWalker(int, siginfo_t*, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Unix/UnixPlatformCrashContext.cpp:1034]
+libc.so.6!UnknownFunction(0x4251f)
+libc.so.6!UnknownFunction(0x91196)
+libc.so.6!pthread_cond_timedwait(+0x23a)
+libUnrealEditor-Core.so!FPThreadEvent::Wait(unsigned int, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/GenericPlatform/GenericPlatformProcess.cpp:460]
+libUnrealEditor-Engine.so!FAsyncTaskBase::WaitCompletionWithTimeout(float) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Async/AsyncWork.h:524]
+libUnrealEditor-Engine.so!AsyncCompilationHelpers::FinishCompilation(TFunctionRef<AsyncCompilationHelpers::ICompilable& (int)>, int, FText const&, FLogCategoryBase const&, TFunctionRef<void (AsyncCompilationHelpers::ICompilable*)>) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/AsyncCompilationHelpers.cpp:152]
+libUnrealEditor-Engine.so!FSkinnedAssetCompilingManager::FinishCompilation(TArrayView<USkinnedAsset* const, int>) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/SkinnedAssetCompiler.cpp:340]
+libUnrealEditor-Engine.so!USkinnedAsset::WaitUntilAsyncPropertyReleasedInternal(unsigned long long, ESkinnedAssetAsyncPropertyLockType) const [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/SkinnedAsset.cpp:206]
+libUnrealEditor-Engine.so!USkeletalMesh::GetRefSkeleton() const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Engine/Classes/Engine/SkeletalMesh.h:1935]
+libUnrealEditor-Engine.so!USkeleton::MergeAllBonesToBoneTree(USkinnedAsset const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/Animation/Skeleton.cpp:1225]
+libUnrealEditor-UnrealEd.so!UnFbx::FFbxImporter::ImportSkeletalMesh(UnFbx::FFbxImporter::FImportSkeletalMeshArgs&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Fbx/FbxSkeletalMeshImport.cpp:2083]
+libUnrealEditor-UnrealEd.so!UFbxFactory::FactoryCreateFile(UClass*, UObject*, FName, EObjectFlags, FString const&, char16_t const*, FFeedbackContext*, bool&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Fbx/FbxFactory.cpp:708]
+libUnrealEditor-UnrealEd.so!UFactory::ImportObject(UClass*, UObject*, FName, EObjectFlags, FString const&, char16_t const*, bool&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Factories/Factory.cpp:208]
+libUnrealEditor-AssetTools.so!UAssetToolsImpl::ImportAssetsInternal(TArray<FString, TSizedDefaultAllocator<32> > const&, FString const&, TArray<TTuple<FString, FString>, TSizedDefaultAllocator<32> >*, FAssetImportParams const&) const [/mnt/horde/++UE5/Sync/Engine/Source/./Developer/AssetTools/Private/AssetTools.cpp:3103]
+libUnrealEditor-AssetTools.so!UAssetToolsImpl::ImportAssetTasks(TArray<UAssetImportTask*, TSizedDefaultAllocator<32> > const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Developer/AssetTools/Private/AssetTools.cpp:1952]
+libUnrealEditor-AssetTools.so!IAssetTools::execImportAssetTasks(UObject*, FFrame&, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Intermediate/Build/Linux/B4D820EA/UnrealEditor/Inc/AssetTools/UHT/IAssetTools.gen.cpp:621]
+libUnrealEditor-CoreUObject.so!UFunction::Invoke(UObject*, FFrame&, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/Class.cpp:6455]
+libUnrealEditor-CoreUObject.so!UObject::ProcessEvent(UFunction*, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/ScriptCore.cpp:2114]
+libUnrealEditor-PythonScriptPlugin.so!PyUtil::InvokeFunctionCall(UObject*, UFunction const*, void*, char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyUtil.cpp:526]
+libUnrealEditor-PythonScriptPlugin.so!FPyWrapperObject::CallFunction_Impl(UObject*, _object*, _object*, PyGenUtil::FGeneratedWrappedFunction const&, char const*, char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp:303]
+libUnrealEditor-PythonScriptPlugin.so!FPyWrapperObject::CallFunction(FPyWrapperObject*, _object*, _object*, PyGenUtil::FGeneratedWrappedFunction const&, char const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp:227]
+libpython3.9.so.1.0!_PyObject_MakeTpCall(+0x7b)
+libpython3.9.so.1.0!UnknownFunction(0x1376b6)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x7297)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x736b)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x736b)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0xf7)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x7217)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libpython3.9.so.1.0!_PyObject_FastCallDictTstate(+0xd0)
+libpython3.9.so.1.0!_PyObject_Call_Prepend(+0x63)
+libpython3.9.so.1.0!UnknownFunction(0x1138d4)
+libpython3.9.so.1.0!UnknownFunction(0x1105e7)
+libpython3.9.so.1.0!_PyObject_MakeTpCall(+0x7b)
+libpython3.9.so.1.0!UnknownFunction(0x1376b6)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x736b)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0x1aa)
+libUnrealEditor-PythonScriptPlugin.so!decltype(auto) UE::Core::Private::Tuple::TTupleBase<TIntegerSequence<unsigned int> >::ApplyAfter<PySlateUtil::RegisterSlateTickCallback(FSlateApplication::FSlateTickEvent&, TArray<FDelegateHandle, TSizedDefaultAllocator<32> >&, _object*)::$_99&, float&>(PySlateUtil::RegisterSlateTickCallback(FSlateApplication::FSlateTickEvent&, TArray<FDelegateHandle, TSizedDefaultAllocator<32> >&, _object*)::$_99&&&, float&&&) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Templates/Tuple.h:327]
+libUnrealEditor-PythonScriptPlugin.so!TBaseFunctorDelegateInstance<void (float), FDefaultDelegateUserPolicy, PySlateUtil::RegisterSlateTickCallback(FSlateApplication::FSlateTickEvent&, TArray<FDelegateHandle, TSizedDefaultAllocator<32> >&, _object*)::$_99>::ExecuteIfSafe(float) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h:845]
+libUnrealEditor-Slate.so!void TMulticastDelegateBase<FDefaultDelegateUserPolicy>::Broadcast<IBaseDelegateInstance<void (float), FDefaultDelegateUserPolicy>, TDelegate<void (float), FDefaultDelegateUserPolicy>, float>(float) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/MulticastDelegateBase.h:178]
+libUnrealEditor-Slate.so!FSlateApplication::TickAndDrawWidgets(float) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:1643]
+libUnrealEditor-Slate.so!FSlateApplication::Tick(ESlateTickType) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:1493]
+UnrealEditor!FEngineLoop::Tick() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/LaunchEngineLoop.cpp:5490]
+UnrealEditor!GuardedMain(char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/Launch.cpp:204]
+libUnrealEditor-UnixCommonStartup.so!CommonUnixMain(int, char**, int (*)(char16_t const*), void (*)()) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Unix/UnixCommonStartup/Private/UnixCommonStartup.cpp:269]
+libc.so.6!UnknownFunction(0x29d8f)
+libc.so.6!__libc_start_main(+0x7f)
+UnrealEditor!_start()
+
+<CALLSTACK END>
+
+0 loaded modules
+
+Report end!

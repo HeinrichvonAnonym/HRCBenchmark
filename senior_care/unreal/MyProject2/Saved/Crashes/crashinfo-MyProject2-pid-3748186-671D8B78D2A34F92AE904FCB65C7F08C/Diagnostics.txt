@@ -1,0 +1,88 @@
+Generating report for minidump
+
+Application version 5.1.0.0
+ ... built from changelist 23058290
+
+OS version Linux 5.15.0-rt17 (network name: heinrich-System-Product-Name)
+Running 14 x86_64 processors (20 logical cores)
+Exception was "SIGSEGV: invalid attempt to read memory at address 0x0000000a7fff0038"
+
+<SOURCE START>
+<SOURCE END>
+
+<CALLSTACK START>
+libUnrealEditor-CoreUObject.so!UStruct::IsChildOf(UStruct const*) const [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/Class.cpp:2215]
+libUnrealEditor-UnrealEd.so!USelection::GetObjectForElementHandle(FTypedElementHandle const&) const [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Selection.cpp:196]
+libUnrealEditor-UnrealEd.so!USelection::GetSelectedObject(int) const [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Selection.cpp:140]
+libUnrealEditor-UnrealEd.so!UEditorEngine::GetSelectedActorCount() const [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorEngine.cpp:490]
+libUnrealEditor-LevelEditor.so!SLevelViewport::GetSelectedActorsCurrentLevelTextVisibility() const [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/LevelEditor/Private/SLevelViewport.cpp:3797]
+libUnrealEditor-LevelEditor.so!UE::Core::Private::Function::TFunctionRefCaller<SLevelViewport::ConstructViewportOverlayContent()::$_1, EVisibility ()>::Call(void*) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Templates/Function.h:465]
+libUnrealEditor-Slate.so!TBaseFunctorDelegateInstance<EVisibility (), FDefaultDelegateUserPolicy, TFunction<EVisibility ()> >::Execute() const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h:839]
+libUnrealEditor-SlateCore.so!SlateAttributePrivate::TSlateAttributeBase<SWidget, EVisibility, SlateAttributePrivate::FSlateAttributeNoInvalidationReason, TSlateAttributeComparePredicate<TEqualTo<void> >, (SlateAttributePrivate::ESlateAttributeType)0>::FSlateAttributeGetterWrapper<SlateAttributePrivate::TSlateAttributeBase<SWidget, EVisibility, SlateAttributePrivate::FSlateAttributeNoInvalidationReason, TSlateAttributeComparePredicate<TEqualTo<void> >, (SlateAttributePrivate::ESlateAttributeType)0> >::UpdateAttribute(SWidget const&) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Types/Attributes/SlateAttributeBase.inl:585]
+libUnrealEditor-SlateCore.so!FSlateAttributeMetaData::UpdateAttributesImpl(SWidget&, FSlateAttributeMetaData::EInvalidationPermission, int, int) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/SlateCore/Private/Types/SlateAttributeMetaData.cpp:491]
+libUnrealEditor-SlateCore.so!FSlateAttributeMetaData::UpdateChildrenOnlyVisibilityAttributes(SWidget&, FSlateAttributeMetaData::EInvalidationPermission, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/SlateCore/Private/Types/SlateAttributeMetaData.cpp:459]
+libUnrealEditor-SlateCore.so!SWidget::ArrangeChildren(FGeometry const&, FArrangedChildren&, bool) const [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/SlateCore/Private/Widgets/SWidget.cpp:1688]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:27]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-Slate.so!bool FWidgetPath::SearchForWidgetRecursively<FWidgetMatcher>(FWidgetMatcher const&, FArrangedWidget const&, FArrangedChildren&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.inl:37]
+libUnrealEditor-SlateCore.so!bool FWidgetPath::ExtendPathTo<FWidgetMatcher>(FWidgetMatcher const&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/SlateCore/Public/Layout/WidgetPath.h:108]
+libUnrealEditor-SlateCore.so!FSlateWindowHelper::FindPathToWidget(TArray<TSharedRef<SWindow, (ESPMode)1>, TSizedDefaultAllocator<32> > const&, TSharedRef<SWidget const, (ESPMode)1>, FWidgetPath&, EVisibility) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/SlateCore/Private/Application/SlateWindowHelper.cpp:166]
+libUnrealEditor-SlateCore.so!SWindow::OnIsActiveChanged(FWindowActivateEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/SlateCore/Private/Widgets/SWindow.cpp:1683]
+libUnrealEditor-Slate.so!FSlateApplication::ProcessWindowActivatedEvent(FWindowActivateEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:6481]
+libUnrealEditor-Slate.so!FSlateApplication::OnWindowActivationChanged(TSharedRef<FGenericWindow, (ESPMode)1> const&, EWindowActivation) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:6447]
+libUnrealEditor-ApplicationCore.so!FLinuxApplication::ActivateWindow(TSharedPtr<FLinuxWindow, (ESPMode)1> const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxApplication.cpp:1733]
+libUnrealEditor-ApplicationCore.so!FLinuxApplication::RemoveRevertFocusWindow(SDL_Window*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxApplication.cpp:1679]
+libUnrealEditor-ApplicationCore.so!FLinuxWindow::Destroy() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxWindow.cpp:451]
+libUnrealEditor-Slate.so!FSlateApplication::PrivateDestroyWindow(TSharedRef<SWindow, (ESPMode)1> const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:6680]
+libUnrealEditor-Slate.so!FSlateApplication::DestroyWindowsImmediately() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:3025]
+libUnrealEditor-Slate.so!FSlateApplication::RequestDestroyWindow(TSharedRef<SWindow, (ESPMode)1>) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:2257]
+libUnrealEditor-SlateCore.so!SWindow::RequestDestroyWindow() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/SlateCore/Private/Widgets/SWindow.cpp:1367]
+libUnrealEditor-UnrealEd.so!FFeedbackContextEditor::FinalizeSlowTask() [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FeedbackContextEditor.cpp:506]
+libUnrealEditor-Core.so!FSlowTask::Destroy() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Misc/SlowTask.cpp:113]
+libUnrealEditor-AssetTools.so!UAssetToolsImpl::ImportAssetTasks(TArray<UAssetImportTask*, TSizedDefaultAllocator<32> > const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Developer/AssetTools/Private/AssetTools.cpp:1972]
+libUnrealEditor-AssetTools.so!IAssetTools::execImportAssetTasks(UObject*, FFrame&, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Intermediate/Build/Linux/B4D820EA/UnrealEditor/Inc/AssetTools/UHT/IAssetTools.gen.cpp:621]
+libUnrealEditor-CoreUObject.so!UFunction::Invoke(UObject*, FFrame&, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/Class.cpp:6455]
+libUnrealEditor-CoreUObject.so!UObject::ProcessEvent(UFunction*, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/ScriptCore.cpp:2114]
+libUnrealEditor-PythonScriptPlugin.so!PyUtil::InvokeFunctionCall(UObject*, UFunction const*, void*, char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyUtil.cpp:526]
+libUnrealEditor-PythonScriptPlugin.so!FPyWrapperObject::CallFunction_Impl(UObject*, _object*, _object*, PyGenUtil::FGeneratedWrappedFunction const&, char const*, char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp:303]
+libUnrealEditor-PythonScriptPlugin.so!FPyWrapperObject::CallFunction(FPyWrapperObject*, _object*, _object*, PyGenUtil::FGeneratedWrappedFunction const&, char const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp:227]
+libpython3.9.so.1.0!_PyObject_MakeTpCall(+0x7b)
+libpython3.9.so.1.0!Unknown
+<CALLSTACK END>
+
+0 loaded modules
+
+Report end!

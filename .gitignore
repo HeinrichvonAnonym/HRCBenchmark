@@ -1,0 +1,6 @@
+*.npz
+*.pkl
+*.so
+*.pyc
+*.a
+*.gch

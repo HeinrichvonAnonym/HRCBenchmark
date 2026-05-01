@@ -1,0 +1,117 @@
+dt: 1/120
+scene_config: "benchmark/senior_care/config/scene/demo.yaml"
+assets:
+  - name: franka_emika_panda
+    mujoco_model: "benchmark/asset/robot/franka_description/robots/franka_panda_gripper.urdf"
+    ue_model: "benchmark/asset/robot/franka_description/robots/fbx/franka_panda_gripper.fbx"
+    frame: "panda_link0"  # default frame is the base frame
+    fix_base: true
+    disable_gravity: true
+    scale: 1
+    root:
+      position: [0.0, -0.2, 0.8]
+      orientation: [1, 0.0, 0.0, 0]
+    state: # must have state for each joint
+      position: 
+        initial: [-0.32, -0.9, 0.13, -2.75, 0.18, 1.95, 0.49, # arm home position
+                  0.08] # gripper open position
+      velocity: 
+        initial: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+      effort: 
+        initial: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    dynamic: # must have stiffness, damping, and armature for each joint
+      stiffness: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] # notice: not the stiffness for impedance control, but the stiffness for the joint
+      damping: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] # notice: not the damping for impedance control, but the damping for the joint
+      armature: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+
+    action:
+      selected_joints: [panda_joint1, 
+                        panda_joint2,
+                        panda_joint3, 
+                        panda_joint4, 
+                        panda_joint5, 
+                        panda_joint6, 
+                        panda_joint7, 
+                        panda_hand_joint] # list of joints to control
+
+      # must have same dof as selected_joints
+      kp: [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0] # also called position gain
+      kd: [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0] # also called velocity gain
+      behavior_of_unspecified: "fix" # "fix" or "free"
+
+  - name: simpl_neutral
+    mujoco_model: "benchmark/asset/human/smplx/models/smplx/xml/smplx_neutral_skeleton.xml"
+    uue_model: "benchmark/asset/human/smplx/models/smplx/fbx/SMPLX_NEUTRAL.fbx"
+    frame: "pelvis"
+    fix_base: false
+    disable_gravity: false
+    scale: 1
+    root:
+      position: [0.65, 0.0, 0.75]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+
+    state: # must have state for each joint
+      position: 
+        # 33-DoF reduced pose layout used in this config (11 joints x 3 values each):
+        # [0:3]   neck (rx, ry, rz)
+        # [3:6]   left_shoulder (rx, ry, rz)
+        # [6:9]   right_shoulder (rx, ry, rz)
+        # [9:12]  left_elbow (rx, ry, rz)
+        # [12:15] right_elbow (rx, ry, rz)
+        # [15:18] left_wrist (rx, ry, rz)
+        # [18:21] right_wrist (rx, ry, rz)
+        # [21:24] left_knee (rx, ry, rz)
+        # [24:27] right_knee (rx, ry, rz)
+        # [27:30] left_ankle (rx, ry, rz)
+        # [30:33] right_ankle (rx, ry, rz)
+        # Finger joints are not represented in this reduced 33-DoF vector.
+        # `joint_order` makes this layout explicit and asset-agnostic in code.
+        joint_order: [neck, l_shoulder, r_shoulder, l_elbow, r_elbow, l_wrist, r_wrist, l_knee, r_knee, l_ankle, r_ankle]
+        initial: [
+                  0.0, 0.0, 0.0,      # neck
+                  0.0, -1, 0.0,    # left_shoulder  (arms closer to torso)
+                  0.0, 1, 0.0,     # right_shoulder (arms closer to torso)
+                  0.0, 0.0, 0.0,      # left_elbow
+                  0.0, 0.0, 0.0,      # right_elbow
+                  0.0, 0.0, 0.0,      # left_wrist
+                  0.0, 0.0, 0.0,      # right_wrist
+                  0.0, 0.0, 0.0,      # left_knee
+                  0.0, 0.0, 0.0,      # right_knee
+                  0.0, 0.0, 0.0,      # left_ankle
+                  0.0, 0.0, 0.0       # right_ankle
+                ]
+      velocity: 
+        initial: [
+                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0
+                ]
+      effort:  
+        initial: [
+                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0
+                ]
+      
+    dynamic:  # add propery values
+      mass:
+      stiffness:
+      damping:
+      armature:
+    
+    action:
+      selected_joints: []
+      kp: []
+      kd: []
+      behavior_of_unspecified: "free" # "fix" or "free"
+
+observation:
+  - franka_emika_panda
+  - simpl_neutral
+
+action:
+  - franka_emika_panda

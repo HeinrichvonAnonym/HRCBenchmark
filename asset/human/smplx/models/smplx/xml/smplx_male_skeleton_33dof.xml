@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mujoco model="smplx_male_skeleton_33dof">
+  <compiler angle="radian" coordinate="local"/>
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+  <default>
+    <joint damping="1.0" armature="0.01" limited="false"/>
+    <geom contype="0" conaffinity="0"/>
+  </default>
+  <worldbody>
+    <body name="pelvis" pos="0 0 1">
+      <freejoint name="root_free"/>
+      <geom name="pelvis_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+      <geom name="bone_pelvis_l_hip" type="capsule" fromto="0 0 0 0.056144 -0.094542 -0.023475" size="0.008" rgba="0.95 0.65 0.30 1"/>
+      <body name="l_hip" pos="0.056144 -0.094542 -0.023475">
+        <joint name="l_hip_ball" type="ball"/>
+        <geom name="l_hip_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+        <geom name="bone_l_hip_l_knee" type="capsule" fromto="0 0 0 0.067229 -0.396868 -0.006654" size="0.008" rgba="0.95 0.65 0.30 1"/>
+        <body name="l_knee" pos="0.067229 -0.396868 -0.006654">
+          <joint name="l_knee_hinge" type="hinge" axis="1 0 0" limited="false"/>
+          <geom name="l_knee_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+          <geom name="bone_l_knee_l_ankle" type="capsule" fromto="0 0 0 -0.045594 -0.421286 -0.041146" size="0.008" rgba="0.95 0.65 0.30 1"/>
+          <body name="l_ankle" pos="-0.045594 -0.421286 -0.041146">
+            <joint name="l_ankle_hinge" type="hinge" axis="1 0 0" limited="false"/>
+            <geom name="l_ankle_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+            <geom name="bone_l_ankle_l_foot" type="capsule" fromto="0 0 0 0.044309 -0.060736 0.135157" size="0.008" rgba="0.95 0.65 0.30 1"/>
+            <body name="l_foot" pos="0.044309 -0.060736 0.135157">
+              <geom name="l_foot_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+            </body>
+          </body>
+        </body>
+      </body>
+      <geom name="bone_pelvis_r_hip" type="capsule" fromto="0 0 0 -0.057870 -0.105167 -0.016559" size="0.008" rgba="0.95 0.65 0.30 1"/>
+      <body name="r_hip" pos="-0.057870 -0.105167 -0.016559">
+        <joint name="r_hip_ball" type="ball"/>
+        <geom name="r_hip_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+        <geom name="bone_r_hip_r_knee" type="capsule" fromto="0 0 0 -0.050727 -0.379821 -0.014452" size="0.008" rgba="0.95 0.65 0.30 1"/>
+        <body name="r_knee" pos="-0.050727 -0.379821 -0.014452">
+          <joint name="r_knee_hinge" type="hinge" axis="1 0 0" limited="false"/>
+          <geom name="r_knee_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+          <geom name="bone_r_knee_r_ankle" type="capsule" fromto="0 0 0 0.017155 -0.434912 -0.039938" size="0.008" rgba="0.95 0.65 0.30 1"/>
+          <body name="r_ankle" pos="0.017155 -0.434912 -0.039938">
+            <joint name="r_ankle_hinge" type="hinge" axis="1 0 0" limited="false"/>
+            <geom name="r_ankle_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+            <geom name="bone_r_ankle_r_foot" type="capsule" fromto="0 0 0 -0.035444 -0.059670 0.141813" size="0.008" rgba="0.95 0.65 0.30 1"/>
+            <body name="r_foot" pos="-0.035444 -0.059670 0.141813">
+              <geom name="r_foot_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+            </body>
+          </body>
+        </body>
+      </body>
+      <geom name="bone_pelvis_spine1" type="capsule" fromto="0 0 0 -0.001336 0.110417 -0.037925" size="0.008" rgba="0.95 0.65 0.30 1"/>
+      <body name="spine1" pos="-0.001336 0.110417 -0.037925">
+        <joint name="spine1_ball" type="ball"/>
+        <geom name="spine1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+        <geom name="bone_spine1_spine2" type="capsule" fromto="0 0 0 0.010209 0.150971 0.004442" size="0.008" rgba="0.95 0.65 0.30 1"/>
+        <body name="spine2" pos="0.010209 0.150971 0.004442">
+          <joint name="spine2_ball" type="ball"/>
+          <geom name="spine2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+          <geom name="bone_spine2_spine3" type="capsule" fromto="0 0 0 -0.008992 0.057847 0.022670" size="0.008" rgba="0.95 0.65 0.30 1"/>
+          <body name="spine3" pos="-0.008992 0.057847 0.022670">
+            <geom name="spine3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+            <geom name="bone_spine3_neck" type="capsule" fromto="0 0 0 -0.009582 0.166021 -0.027240" size="0.008" rgba="0.95 0.65 0.30 1"/>
+            <body name="neck" pos="-0.009582 0.166021 -0.027240">
+              <joint name="neck_ball" type="ball"/>
+              <geom name="neck_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+              <geom name="bone_neck_head" type="capsule" fromto="0 0 0 0.022904 0.160720 0.022940" size="0.008" rgba="0.95 0.65 0.30 1"/>
+              <body name="head" pos="0.022904 0.160720 0.022940">
+                <geom name="head_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                <geom name="bone_head_jaw" type="capsule" fromto="0 0 0 -0.020704 -0.000888 -0.006180" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                <body name="jaw" pos="-0.020704 -0.000888 -0.006180">
+                  <geom name="jaw_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                </body>
+                <geom name="bone_head_l_eye" type="capsule" fromto="0 0 0 0.018105 0.045420 0.065838" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                <body name="l_eye" pos="0.018105 0.045420 0.065838">
+                  <geom name="l_eye_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                </body>
+                <geom name="bone_head_r_eye" type="capsule" fromto="0 0 0 -0.046846 0.045420 0.065837" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                <body name="r_eye" pos="-0.046846 0.045420 0.065837">
+                  <geom name="r_eye_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                </body>
+              </body>
+            </body>
+            <geom name="bone_spine3_l_collar" type="capsule" fromto="0 0 0 0.042421 0.076277 -0.005255" size="0.008" rgba="0.95 0.65 0.30 1"/>
+            <body name="l_collar" pos="0.042421 0.076277 -0.005255">
+              <geom name="l_collar_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+              <geom name="bone_l_collar_l_shoulder" type="capsule" fromto="0 0 0 0.140946 0.060417 -0.014899" size="0.008" rgba="0.95 0.65 0.30 1"/>
+              <body name="l_shoulder" pos="0.140946 0.060417 -0.014899">
+                <joint name="l_shoulder_ball" type="ball"/>
+                <geom name="l_shoulder_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                <geom name="bone_l_shoulder_l_elbow" type="capsule" fromto="0 0 0 0.254749 -0.076166 -0.045492" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                <body name="l_elbow" pos="0.254749 -0.076166 -0.045492">
+                  <joint name="l_elbow_hinge" type="hinge" axis="0 1 0" limited="false"/>
+                  <geom name="l_elbow_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                  <geom name="bone_l_elbow_l_wrist" type="capsule" fromto="0 0 0 0.271604 0.025613 -0.000648" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                  <body name="l_wrist" pos="0.271604 0.025613 -0.000648">
+                    <geom name="l_wrist_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                    <geom name="bone_l_wrist_l_index1" type="capsule" fromto="0 0 0 0.106087 -0.008586 0.021057" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="l_index1" pos="0.106087 -0.008586 0.021057">
+                      <geom name="l_index1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_l_index1_l_index2" type="capsule" fromto="0 0 0 0.033334 0.001640 0.003654" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="l_index2" pos="0.033334 0.001640 0.003654">
+                        <geom name="l_index2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_l_index2_l_index3" type="capsule" fromto="0 0 0 0.023496 -0.002705 -0.000222" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="l_index3" pos="0.023496 -0.002705 -0.000222">
+                          <geom name="l_index3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                    <geom name="bone_l_wrist_l_middle1" type="capsule" fromto="0 0 0 0.114220 -0.005852 -0.003961" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="l_middle1" pos="0.114220 -0.005852 -0.003961">
+                      <geom name="l_middle1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_l_middle1_l_middle2" type="capsule" fromto="0 0 0 0.031850 0.000421 -0.004450" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="l_middle2" pos="0.031850 0.000421 -0.004450">
+                        <geom name="l_middle2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_l_middle2_l_middle3" type="capsule" fromto="0 0 0 0.024356 -0.002530 -0.004432" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="l_middle3" pos="0.024356 -0.002530 -0.004432">
+                          <geom name="l_middle3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                    <geom name="bone_l_wrist_l_pinky1" type="capsule" fromto="0 0 0 0.088138 -0.014748 -0.046496" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="l_pinky1" pos="0.088138 -0.014748 -0.046496">
+                      <geom name="l_pinky1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_l_pinky1_l_pinky2" type="capsule" fromto="0 0 0 0.016998 -0.001738 -0.012036" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="l_pinky2" pos="0.016998 -0.001738 -0.012036">
+                        <geom name="l_pinky2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_l_pinky2_l_pinky3" type="capsule" fromto="0 0 0 0.016655 -0.002018 -0.011200" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="l_pinky3" pos="0.016655 -0.002018 -0.011200">
+                          <geom name="l_pinky3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                    <geom name="bone_l_wrist_l_ring1" type="capsule" fromto="0 0 0 0.101918 -0.008948 -0.028942" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="l_ring1" pos="0.101918 -0.008948 -0.028942">
+                      <geom name="l_ring1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_l_ring1_l_ring2" type="capsule" fromto="0 0 0 0.029584 0.000639 -0.005070" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="l_ring2" pos="0.029584 0.000639 -0.005070">
+                        <geom name="l_ring2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_l_ring2_l_ring3" type="capsule" fromto="0 0 0 0.023939 -0.002336 -0.006838" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="l_ring3" pos="0.023939 -0.002336 -0.006838">
+                          <geom name="l_ring3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                    <geom name="bone_l_wrist_l_thumb1" type="capsule" fromto="0 0 0 0.041726 -0.020077 0.027704" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="l_thumb1" pos="0.041726 -0.020077 0.027704">
+                      <geom name="l_thumb1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_l_thumb1_l_thumb2" type="capsule" fromto="0 0 0 0.017133 0.001827 0.027284" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="l_thumb2" pos="0.017133 0.001827 0.027284">
+                        <geom name="l_thumb2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_l_thumb2_l_thumb3" type="capsule" fromto="0 0 0 0.020929 -0.004745 0.017044" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="l_thumb3" pos="0.020929 -0.004745 0.017044">
+                          <geom name="l_thumb3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <geom name="bone_spine3_r_collar" type="capsule" fromto="0 0 0 -0.046077 0.076816 -0.008529" size="0.008" rgba="0.95 0.65 0.30 1"/>
+            <body name="r_collar" pos="-0.046077 0.076816 -0.008529">
+              <geom name="r_collar_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+              <geom name="bone_r_collar_r_shoulder" type="capsule" fromto="0 0 0 -0.130355 0.058849 -0.012586" size="0.008" rgba="0.95 0.65 0.30 1"/>
+              <body name="r_shoulder" pos="-0.130355 0.058849 -0.012586">
+                <joint name="r_shoulder_ball" type="ball"/>
+                <geom name="r_shoulder_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                <geom name="bone_r_shoulder_r_elbow" type="capsule" fromto="0 0 0 -0.272493 -0.045926 -0.032429" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                <body name="r_elbow" pos="-0.272493 -0.045926 -0.032429">
+                  <joint name="r_elbow_hinge" type="hinge" axis="0 1 0" limited="false"/>
+                  <geom name="r_elbow_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                  <geom name="bone_r_elbow_r_wrist" type="capsule" fromto="0 0 0 -0.263379 0.000029 -0.011822" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                  <body name="r_wrist" pos="-0.263379 0.000029 -0.011822">
+                    <geom name="r_wrist_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                    <geom name="bone_r_wrist_r_index1" type="capsule" fromto="0 0 0 -0.105598 -0.012210 0.020131" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="r_index1" pos="-0.105598 -0.012210 0.020131">
+                      <geom name="r_index1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_r_index1_r_index2" type="capsule" fromto="0 0 0 -0.033335 0.001640 0.003654" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="r_index2" pos="-0.033335 0.001640 0.003654">
+                        <geom name="r_index2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_r_index2_r_index3" type="capsule" fromto="0 0 0 -0.023497 -0.002706 -0.000223" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="r_index3" pos="-0.023497 -0.002706 -0.000223">
+                          <geom name="r_index3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                    <geom name="bone_r_wrist_r_middle1" type="capsule" fromto="0 0 0 -0.113733 -0.009477 -0.004889" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="r_middle1" pos="-0.113733 -0.009477 -0.004889">
+                      <geom name="r_middle1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_r_middle1_r_middle2" type="capsule" fromto="0 0 0 -0.031850 0.000419 -0.004451" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="r_middle2" pos="-0.031850 0.000419 -0.004451">
+                        <geom name="r_middle2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_r_middle2_r_middle3" type="capsule" fromto="0 0 0 -0.024356 -0.002530 -0.004432" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="r_middle3" pos="-0.024356 -0.002530 -0.004432">
+                          <geom name="r_middle3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                    <geom name="bone_r_wrist_r_pinky1" type="capsule" fromto="0 0 0 -0.087654 -0.018375 -0.047425" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="r_pinky1" pos="-0.087654 -0.018375 -0.047425">
+                      <geom name="r_pinky1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_r_pinky1_r_pinky2" type="capsule" fromto="0 0 0 -0.016998 -0.001738 -0.012035" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="r_pinky2" pos="-0.016998 -0.001738 -0.012035">
+                        <geom name="r_pinky2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_r_pinky2_r_pinky3" type="capsule" fromto="0 0 0 -0.016654 -0.002019 -0.011200" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="r_pinky3" pos="-0.016654 -0.002019 -0.011200">
+                          <geom name="r_pinky3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                    <geom name="bone_r_wrist_r_ring1" type="capsule" fromto="0 0 0 -0.101432 -0.012574 -0.029871" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="r_ring1" pos="-0.101432 -0.012574 -0.029871">
+                      <geom name="r_ring1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_r_ring1_r_ring2" type="capsule" fromto="0 0 0 -0.029584 0.000639 -0.005069" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="r_ring2" pos="-0.029584 0.000639 -0.005069">
+                        <geom name="r_ring2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_r_ring2_r_ring3" type="capsule" fromto="0 0 0 -0.023938 -0.002337 -0.006839" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="r_ring3" pos="-0.023938 -0.002337 -0.006839">
+                          <geom name="r_ring3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                    <geom name="bone_r_wrist_r_thumb1" type="capsule" fromto="0 0 0 -0.041237 -0.023705 0.026778" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                    <body name="r_thumb1" pos="-0.041237 -0.023705 0.026778">
+                      <geom name="r_thumb1_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                      <geom name="bone_r_thumb1_r_thumb2" type="capsule" fromto="0 0 0 -0.017132 0.001828 0.027283" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                      <body name="r_thumb2" pos="-0.017132 0.001828 0.027283">
+                        <geom name="r_thumb2_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        <geom name="bone_r_thumb2_r_thumb3" type="capsule" fromto="0 0 0 -0.020930 -0.004743 0.017043" size="0.008" rgba="0.95 0.65 0.30 1"/>
+                        <body name="r_thumb3" pos="-0.020930 -0.004743 0.017043">
+                          <geom name="r_thumb3_joint" type="box" size="0.010 0.010 0.010" rgba="0.12 0.70 0.95 1"/>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

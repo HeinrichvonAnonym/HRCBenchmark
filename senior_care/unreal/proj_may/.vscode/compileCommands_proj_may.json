@@ -1,0 +1,138 @@
+[
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUE/MuJoCoUE.Build.cs",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUE.2.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUE/Private/MuJoCoSimulation.cpp",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUE.2.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUE/Private/MuJoCoUE.cpp",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUE.2.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUE/Public/MuJoCoSimulation.h",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUE.2.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUE/Public/MuJoCoUE.h",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUE.2.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/MuJoCoUEEditor.Build.cs",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/Private/MuJoCoBridgeSubsystem.cpp",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/Private/MuJoCoDrivenSkeletonComponent.cpp",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/Private/MuJoCoSkeletalActor.cpp",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/Private/MuJoCoUEEditor.cpp",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/Public/MuJoCoBridgeSubsystem.h",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/Public/MuJoCoDrivenSkeletonComponent.h",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/Public/MuJoCoSkeletalActor.h",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Plugins/MuJoCoUE/Source/MuJoCoUEEditor/Public/MuJoCoUEEditor.h",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/MuJoCoUEEditor.3.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Source/proj_may/proj_may.Build.cs",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/proj_may.1.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Source/proj_may/proj_may.cpp",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/proj_may.1.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	},
+	{
+		"file": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Source/proj_may/proj_may.h",
+		"arguments": [
+			"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"@/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may/proj_may.1.rsp"
+		],
+		"directory": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Source"
+	}
+]

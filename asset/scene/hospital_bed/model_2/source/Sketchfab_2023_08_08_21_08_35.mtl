@@ -1,0 +1,98 @@
+# Blender 4.1.1 MTL File: 'Sketchfab_2023_08_08_21_08_35.blend'
+# www.blender.org
+
+newmtl AluminiumWorn.001
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_AluminiumWorn_diffuse.png
+map_Ks home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_AluminiumWorn_specular.png
+map_Ns home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_AluminiumWorn_glossiness.png
+map_refl home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_AluminiumWorn_specular.png
+map_Bump -bm 1.000000 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_AluminiumWorn_normal.png
+
+newmtl ClothWhite.001
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd -s 5 5 5 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_ClothWhite_diffuse.png
+map_Ks -s 5 5 5 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_ClothWhite_specular.png
+map_Ns -s 5 5 5 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_ClothWhite_glossiness.png
+map_refl -s 5 5 5 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_ClothWhite_specular.png
+map_Bump -s 5 5 5 -bm 1.000000 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_ClothWhite_normal.png
+
+newmtl PaintBlue.001
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintBlue_diffuse.png
+map_Ks home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintBlue_specular.png
+map_Ns home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintBlue_glossiness.png
+map_refl home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintBlue_specular.png
+map_Bump -bm 1.000000 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintBlue_normal.png
+
+newmtl PaintLightGray.001
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintLightGray_diffuse.png
+map_Ks home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintLightGray_specular.png
+map_Ns home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintLightGray_glossiness.png
+map_refl home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintLightGray_specular.png
+map_Bump -bm 1.000000 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintLightGray_normal.png
+
+newmtl PaintWhite.001
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintWhite_diffuse.png
+map_Ks home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintWhite_specular.png
+map_Ns home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintWhite_glossiness.png
+map_refl home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintWhite_specular.png
+map_Bump -bm 1.000000 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_PaintWhite_normal.png
+
+newmtl RubberA.001
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_RubberA_diffuse.png
+map_Ks home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_RubberA_specular.png
+map_Ns home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_RubberA_glossiness.png
+map_refl home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_RubberA_specular.png
+map_Bump -bm 1.000000 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_RubberA_normal.png
+
+newmtl SteelRawA.001
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelRawA_diffuse.png
+map_Ks home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelRawA_specular.png
+map_Ns home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelRawA_glossiness.png
+map_refl home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelRawA_specular.png
+map_Bump -bm 1.000000 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelRawA_normal.png
+
+newmtl SteelStainlessA.001
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelStainlessA_diffuse.png
+map_Ks home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelStainlessA_specular.png
+map_Ns home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelStainlessA_glossiness.png
+map_refl home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelStainlessA_specular.png
+map_Bump -bm 1.000000 home/heinrich/roboLab/python/benchmark/asset/Downloads/Kitbash3D - Laboratory/KB3DTextures/KB3D_LAB_SteelStainlessA_normal.png

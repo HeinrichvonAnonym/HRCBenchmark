@@ -1,0 +1,84 @@
+Generating report for minidump
+
+Application version 5.1.0.0
+ ... built from changelist 23058290
+
+OS version Linux 5.15.0-rt17 (network name: heinrich-System-Product-Name)
+Running 14 x86_64 processors (20 logical cores)
+Exception was "AsyncCompilationHelpers::FinishCompilation"
+
+<SOURCE START>
+<SOURCE END>
+
+<CALLSTACK START>
+libUnrealEditor-Core.so!ThreadStackWalker(int, siginfo_t*, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Unix/UnixPlatformCrashContext.cpp:1034]
+libc.so.6!UnknownFunction(0x4251f)
+libc.so.6!UnknownFunction(0x91196)
+libc.so.6!pthread_cond_timedwait(+0x23a)
+libUnrealEditor-Core.so!FPThreadEvent::Wait(unsigned int, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/GenericPlatform/GenericPlatformProcess.cpp:460]
+libUnrealEditor-Engine.so!FAsyncTaskBase::WaitCompletionWithTimeout(float) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Async/AsyncWork.h:524]
+libUnrealEditor-Engine.so!AsyncCompilationHelpers::FinishCompilation(TFunctionRef<AsyncCompilationHelpers::ICompilable& (int)>, int, FText const&, FLogCategoryBase const&, TFunctionRef<void (AsyncCompilationHelpers::ICompilable*)>) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/AsyncCompilationHelpers.cpp:152]
+libUnrealEditor-Engine.so!FSkinnedAssetCompilingManager::FinishCompilation(TArrayView<USkinnedAsset* const, int>) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/SkinnedAssetCompiler.cpp:340]
+libUnrealEditor-Engine.so!USkinnedAsset::WaitUntilAsyncPropertyReleasedInternal(unsigned long long, ESkinnedAssetAsyncPropertyLockType) const [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/SkinnedAsset.cpp:206]
+libUnrealEditor-Engine.so!USkeletalMesh::GetRefSkeleton() const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Engine/Classes/Engine/SkeletalMesh.h:1935]
+libUnrealEditor-Engine.so!USkeleton::MergeAllBonesToBoneTree(USkinnedAsset const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/Animation/Skeleton.cpp:1225]
+libUnrealEditor-UnrealEd.so!UnFbx::FFbxImporter::ImportSkeletalMesh(UnFbx::FFbxImporter::FImportSkeletalMeshArgs&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Fbx/FbxSkeletalMeshImport.cpp:2083]
+libUnrealEditor-UnrealEd.so!UFbxFactory::FactoryCreateFile(UClass*, UObject*, FName, EObjectFlags, FString const&, char16_t const*, FFeedbackContext*, bool&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Fbx/FbxFactory.cpp:708]
+libUnrealEditor-UnrealEd.so!UFactory::ImportObject(UClass*, UObject*, FName, EObjectFlags, FString const&, char16_t const*, bool&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Factories/Factory.cpp:208]
+libUnrealEditor-AssetTools.so!UAssetToolsImpl::ImportAssetsInternal(TArray<FString, TSizedDefaultAllocator<32> > const&, FString const&, TArray<TTuple<FString, FString>, TSizedDefaultAllocator<32> >*, FAssetImportParams const&) const [/mnt/horde/++UE5/Sync/Engine/Source/./Developer/AssetTools/Private/AssetTools.cpp:3103]
+libUnrealEditor-AssetTools.so!UAssetToolsImpl::ImportAssetTasks(TArray<UAssetImportTask*, TSizedDefaultAllocator<32> > const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Developer/AssetTools/Private/AssetTools.cpp:1952]
+libUnrealEditor-AssetTools.so!IAssetTools::execImportAssetTasks(UObject*, FFrame&, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Intermediate/Build/Linux/B4D820EA/UnrealEditor/Inc/AssetTools/UHT/IAssetTools.gen.cpp:621]
+libUnrealEditor-CoreUObject.so!UFunction::Invoke(UObject*, FFrame&, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/Class.cpp:6455]
+libUnrealEditor-CoreUObject.so!UObject::ProcessEvent(UFunction*, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/ScriptCore.cpp:2114]
+libUnrealEditor-PythonScriptPlugin.so!PyUtil::InvokeFunctionCall(UObject*, UFunction const*, void*, char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyUtil.cpp:526]
+libUnrealEditor-PythonScriptPlugin.so!FPyWrapperObject::CallFunction_Impl(UObject*, _object*, _object*, PyGenUtil::FGeneratedWrappedFunction const&, char const*, char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp:303]
+libUnrealEditor-PythonScriptPlugin.so!FPyWrapperObject::CallFunction(FPyWrapperObject*, _object*, _object*, PyGenUtil::FGeneratedWrappedFunction const&, char const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PyWrapperObject.cpp:227]
+libpython3.9.so.1.0!_PyObject_MakeTpCall(+0x7b)
+libpython3.9.so.1.0!UnknownFunction(0x1376b6)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x7297)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0xf7)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x7217)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0xf7)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x72d9)
+libpython3.9.so.1.0!_PyFunction_Vectorcall(+0xf7)
+libpython3.9.so.1.0!UnknownFunction(0x13761d)
+libpython3.9.so.1.0!_PyEval_EvalFrameDefault(+0x72d9)
+libpython3.9.so.1.0!UnknownFunction(0x13796e)
+libpython3.9.so.1.0!PyEval_EvalCode(+0x4c)
+libUnrealEditor-PythonScriptPlugin.so!FPythonScriptPlugin::EvalString(char16_t const*, char16_t const*, int, _object*, _object*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PythonScriptPlugin.cpp:1315]
+libUnrealEditor-PythonScriptPlugin.so!FPythonScriptPlugin::RunFile(char16_t const*, char16_t const*, FPythonCommandEx&) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PythonScriptPlugin.cpp:1439]
+libUnrealEditor-PythonScriptPlugin.so!FPythonScriptPlugin::ExecPythonCommandEx(FPythonCommandEx&) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PythonScriptPlugin.cpp:594]
+libUnrealEditor-PythonScriptPlugin.so!FPythonScriptPlugin::ExecPythonCommand(char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PythonScriptPlugin.cpp:498]
+libUnrealEditor-PythonScriptPlugin.so!non-virtual thunk to FPythonScriptPlugin::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./../Plugins/Experimental/PythonScriptPlugin/Source/PythonScriptPlugin/Private/PythonScriptPlugin.cpp:0]
+libUnrealEditor-Core.so!FSelfRegisteringExec::StaticExec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Misc/CoreMisc.cpp:67]
+libUnrealEditor-CoreUObject.so!StaticExec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/Obj.cpp:4713]
+libUnrealEditor-Engine.so!UEngine::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/UnrealEngine.cpp:4639]
+libUnrealEditor-UnrealEd.so!UEditorEngine::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorServer.cpp:5941]
+libUnrealEditor-UnrealEd.so!UUnrealEdEngine::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/UnrealEdSrv.cpp:659]
+libUnrealEditor-UnrealEd.so!FConsoleCommandExecutor::ExecInternal(char16_t const*) const [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Toolkits/FConsoleCommandExecutor.cpp:135]
+libUnrealEditor-UnrealEd.so!FConsoleCommandExecutor::Exec(char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/Toolkits/FConsoleCommandExecutor.cpp:76]
+libUnrealEditor-OutputLog.so!SConsoleInputBox::OnTextCommitted(FText const&, ETextCommit::Type) [/mnt/horde/++UE5/Sync/Engine/Source/./Developer/OutputLog/Private/SOutputLog.cpp:413]
+libUnrealEditor-OutputLog.so!TBaseSPMethodDelegateInstance<false, SConsoleInputBox, (ESPMode)1, void (FText const&, ETextCommit::Type), FDefaultDelegateUserPolicy>::ExecuteIfSafe(FText const&, ETextCommit::Type) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h:312]
+libUnrealEditor-Slate.so!SMultiLineEditableTextBox::OnEditableTextCommitted(FText const&, ETextCommit::Type) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Widgets/Input/SMultiLineEditableTextBox.cpp:649]
+libUnrealEditor-Slate.so!TBaseSPMethodDelegateInstance<false, SMultiLineEditableTextBox, (ESPMode)1, void (FText const&, ETextCommit::Type), FDefaultDelegateUserPolicy>::ExecuteIfSafe(FText const&, ETextCommit::Type) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h:312]
+libUnrealEditor-Slate.so!FSlateEditableTextLayout::HandleCarriageReturn(bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Widgets/Text/SlateEditableTextLayout.cpp:1636]
+libUnrealEditor-Slate.so!FSlateEditableTextLayout::HandleKeyDown(FKeyEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Widgets/Text/SlateEditableTextLayout.cpp:1086]
+libUnrealEditor-Slate.so!SMultiLineEditableText::OnKeyDown(FGeometry const&, FKeyEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Widgets/Text/SMultiLineEditableText.cpp:706]
+libUnrealEditor-Slate.so!FSlateApplication::ProcessKeyDownEvent(FKeyEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:4536]
+libUnrealEditor-Slate.so!FSlateApplication::OnKeyDown(int, unsigned int, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:4447]
+libUnrealEditor-ApplicationCore.so!FLinuxApplication::ProcessDeferredMessage(SDL_Event) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxApplication.cpp:308]
+libUnrealEditor-ApplicationCore.so!FLinuxPlatformApplicationMisc::PumpMessages(bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxPlatformApplicationMisc.cpp:436]
+UnrealEditor!FEngineLoop::Tick() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/LaunchEngineLoop.cpp:5285]
+UnrealEditor!GuardedMain(char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/Launch.cpp:204]
+libUnrealEditor-UnixCommonStartup.so!CommonUnixMain(int, char**, int (*)(char16_t const*), void (*)()) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Unix/UnixCommonStartup/Private/UnixCommonStartup.cpp:269]
+libc.so.6!UnknownFunction(0x29d8f)
+libc.so.6!__libc_start_main(+0x7f)
+UnrealEditor!_start()
+
+<CALLSTACK END>
+
+0 loaded modules
+
+Report end!

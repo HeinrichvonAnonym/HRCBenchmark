@@ -1,0 +1,8 @@
+"/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Plugins/SeniorCareBridge/Intermediate/Build/Linux/B4D820EA/UnrealEditor/Development/SeniorCareBridge/Module.SeniorCareBridge.cpp.o"
+ -soname="libUnrealEditor-SeniorCareBridge.so"
+ -rpath="${ORIGIN}/../../../../../../../../../third_party/UnrealEngine/../../python/benchmark/senior_care/unreal/MyProject3/Plugins/SeniorCareBridge/Source/ThirdParty/ZMQ/Linux/lib"
+ -rpath-link="/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Plugins/SeniorCareBridge/Binaries/Linux"
+ -L"/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Plugins/SeniorCareBridge/Source/ThirdParty/ZMQ/Linux/lib"
+ -L"/home/heinrich/roboLab/third_party/UnrealEngine/Engine/Binaries/Linux"
+ --start-group
+ --end-group

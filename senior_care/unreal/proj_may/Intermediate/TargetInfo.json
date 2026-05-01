@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "proj_may",
+			"Path": "../Source/proj_may.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "proj_mayEditor",
+			"Path": "../Source/proj_mayEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

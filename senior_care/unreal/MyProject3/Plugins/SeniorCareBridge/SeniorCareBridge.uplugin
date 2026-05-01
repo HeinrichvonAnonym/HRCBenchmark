@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1",
+	"FriendlyName": "SeniorCare Bridge",
+	"Description": "Bridges MuJoCo simulation state into UE skeletal animation via ZMQ. Provides AMuJoCoSkeletalActor (PoseableMesh-based) + UMuJoCoBridgeSubsystem.",
+	"Category": "Other",
+	"CreatedBy": "SeniorCare",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "SeniorCareBridge",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}

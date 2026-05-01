@@ -1,0 +1,6 @@
+"/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Intermediate/Build/Linux/B4D820EA/UnrealEditor/Development/MyProject3/MyProject3.cpp.o"
+ -soname="libUnrealEditor-MyProject3.so"
+ -rpath-link="/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Binaries/Linux"
+ -L"/home/heinrich/roboLab/third_party/UnrealEngine/Engine/Binaries/Linux"
+ --start-group
+ --end-group

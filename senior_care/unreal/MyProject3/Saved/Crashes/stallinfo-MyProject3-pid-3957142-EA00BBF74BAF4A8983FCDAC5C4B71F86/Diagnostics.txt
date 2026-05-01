@@ -1,0 +1,55 @@
+Generating report for minidump
+
+Application version 5.1.0.0
+ ... built from changelist 23058290
+
+OS version Linux 5.15.0-rt17 (network name: heinrich-System-Product-Name)
+Running 14 x86_64 processors (20 logical cores)
+Exception was "FShaderCompilingManager::BlockOnShaderMapCompletion"
+
+<SOURCE START>
+<SOURCE END>
+
+<CALLSTACK START>
+libUnrealEditor-Core.so!ThreadStackWalker(int, siginfo_t*, void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Unix/UnixPlatformCrashContext.cpp:1034]
+libc.so.6!UnknownFunction(0x4251f)
+libc.so.6!clock_nanosleep(+0xc7)
+libc.so.6!__nanosleep(+0x16)
+libc.so.6!usleep(+0x4e)
+libUnrealEditor-Core.so!FGenericPlatformProcess::Sleep(float) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/GenericPlatform/GenericPlatformProcess.cpp:354]
+libUnrealEditor-Engine.so!FShaderCompilingManager::BlockOnShaderMapCompletion(TArray<int, TSizedDefaultAllocator<32> > const&, TMap<int, FShaderMapCompileResults, FDefaultSetAllocator, TDefaultMapHashableKeyFuncs<int, FShaderMapCompileResults, false> >&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/ShaderCompiler/ShaderCompiler.cpp:4314]
+libUnrealEditor-Engine.so!FShaderCompilingManager::FinishCompilation(char16_t const*, TArray<int, TSizedDefaultAllocator<32> > const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/ShaderCompiler/ShaderCompiler.cpp:5204]
+libUnrealEditor-Engine.so!FMaterial::FinishCompilation() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/Materials/MaterialShared.cpp:869]
+libUnrealEditor-UnrealEd.so!ThumbnailTools::GenerateThumbnailForObjectToSaveToDisk(UObject*) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/ObjectTools.cpp:5000]
+libUnrealEditor-UnrealEd.so!UUnrealEdEngine::GeneratePackageThumbnailsIfRequired(char16_t const*, FOutputDevice&, TArray<FString, TSizedDefaultAllocator<32> >&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/UnrealEdSrv.cpp:450]
+libUnrealEditor-UnrealEd.so!UUnrealEdEngine::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/UnrealEdSrv.cpp:650]
+libUnrealEditor-UnrealEd.so!InternalSavePackage(UPackage*, bool, bool&, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FileHelpers.cpp:3435]
+libUnrealEditor-UnrealEd.so!InternalPromptForCheckoutAndSave(TArray<UPackage*, TSizedDefaultAllocator<32> > const&, bool, TArray<UPackage*, TSizedDefaultAllocator<32> >&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FileHelpers.cpp:4062]
+libUnrealEditor-UnrealEd.so!FEditorFileUtils::PromptForCheckoutAndSave(TArray<UPackage*, TSizedDefaultAllocator<32> > const&, bool, bool, FText const&, FText const&, TArray<UPackage*, TSizedDefaultAllocator<32> >*, bool, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FileHelpers.cpp:4428]
+libUnrealEditor-UnrealEd.so!FEditorFileUtils::PromptForCheckoutAndSave(TArray<UPackage*, TSizedDefaultAllocator<32> > const&, bool, bool, TArray<UPackage*, TSizedDefaultAllocator<32> >*, bool, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FileHelpers.cpp:4450]
+libUnrealEditor-UnrealEd.so!InternalSavePackages(TArray<UPackage*, TSizedDefaultAllocator<32> > const&, bool, bool, bool, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FileHelpers.cpp:3708]
+libUnrealEditor-UnrealEd.so!FEditorFileUtils::SaveDirtyPackages(bool, bool, bool, bool, bool, bool, bool*, TFunctionRef<bool (UPackage*)> const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FileHelpers.cpp:3851]
+libUnrealEditor-MainFrame.so!FMainFrameHandler::CanCloseEditor() [/mnt/horde/++UE5/Sync/Engine/Source/Editor/MainFrame/Private/Frame/MainFrameHandler.h:154]
+libUnrealEditor-MainFrame.so!FMainFrameHandler::CloseRootWindowOverride(TSharedRef<SWindow, (ESPMode)1> const&) [/mnt/horde/++UE5/Sync/Engine/Source/Editor/MainFrame/Private/Frame/MainFrameHandler.h:173]
+libUnrealEditor-SlateCore.so!SWindow::RequestDestroyWindow() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/SlateCore/Private/Widgets/SWindow.cpp:1363]
+libUnrealEditor-Slate.so!SWindowTitleBar::CloseButton_OnClicked() [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Slate/Public/Framework/Application/SWindowTitleBar.h:536]
+libUnrealEditor-Slate.so!TBaseSPMethodDelegateInstance<false, SWindowTitleBar, (ESPMode)1, FReply (), FDefaultDelegateUserPolicy>::Execute() const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h:295]
+libUnrealEditor-Slate.so!SButton::ExecuteOnClick() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Widgets/Input/SButton.cpp:465]
+libUnrealEditor-Slate.so!SButton::OnMouseButtonUp(FGeometry const&, FPointerEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Widgets/Input/SButton.cpp:390]
+libUnrealEditor-Slate.so!FSlateApplication::RoutePointerUpEvent(FWidgetPath const&, FPointerEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:5033]
+libUnrealEditor-Slate.so!FSlateApplication::ProcessMouseButtonUpEvent(FPointerEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:5601]
+libUnrealEditor-Slate.so!FSlateApplication::OnMouseUp(EMouseButtons::Type, UE::Math::TVector2<double>) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:5566]
+libUnrealEditor-ApplicationCore.so!FLinuxApplication::ProcessDeferredMessage(SDL_Event) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxApplication.cpp:414]
+libUnrealEditor-ApplicationCore.so!FLinuxPlatformApplicationMisc::PumpMessages(bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxPlatformApplicationMisc.cpp:436]
+UnrealEditor!FEngineLoop::Tick() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/LaunchEngineLoop.cpp:5285]
+UnrealEditor!GuardedMain(char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/Launch.cpp:204]
+libUnrealEditor-UnixCommonStartup.so!CommonUnixMain(int, char**, int (*)(char16_t const*), void (*)()) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Unix/UnixCommonStartup/Private/UnixCommonStartup.cpp:269]
+libc.so.6!UnknownFunction(0x29d8f)
+libc.so.6!__libc_start_main(+0x7f)
+UnrealEditor!_start()
+
+<CALLSTACK END>
+
+0 loaded modules
+
+Report end!

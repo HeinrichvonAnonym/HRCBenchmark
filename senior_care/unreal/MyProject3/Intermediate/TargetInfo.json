@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "MyProject3",
+			"Path": "/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Source/MyProject3.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "MyProject3Editor",
+			"Path": "/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Source/MyProject3Editor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

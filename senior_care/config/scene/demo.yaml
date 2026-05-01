@@ -1,0 +1,25 @@
+assets:
+  - name: bed
+    mujoco_file: "benchmark/asset/scene/hospital_bed/model_2/source/Sketchfab_2023_08_08_21_08_35.obj"
+    ue_file: "benchmark/asset/scene/hospital_bed/model_2/source/Sketchfab_2023_08_08_21_08_35.fbx"
+
+    root:
+      - position: [-4.45,-3.2, 0.0]
+      - rotation: [0.0, 0.0, 0.0, 1.0]
+    separate_collision_visual: true
+    visual_offset: [0.0, 0.0, 0.0]
+    collision_offset: [0.0, 0.0, -0.25]   # move only collision down
+    scale: 1.0
+
+  # - name: workbench
+    mujuco_file: "benchmark/asset/scene/work_bench/model_1/source/Sketchfab_2025_05_24_22_51_56.obj"
+  #   ue_file: "benchmark/asset/scene/work_bench/model_1/fbx/Sketchfab_2025_05_24_22_51_56.fbx"
+  #   fix_base: true
+  #   disable_collision: true
+  #   root:
+  #     - position: [0.2, 0.0, 0.0]
+  #     - rotation: [1, 0.0, 0.0, 0]
+  #   separate_collision_visual: true
+  #   visual_offset: [0.0, 0.0, 0.0]
+  #   collision_offset: [0.0, 0.0, -5]   # move only collision down
+  #   scale: 0.3

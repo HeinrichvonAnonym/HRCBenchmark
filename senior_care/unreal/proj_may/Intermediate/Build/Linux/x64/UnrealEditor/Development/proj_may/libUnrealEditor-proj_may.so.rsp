@@ -1,0 +1,7 @@
+"/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Intermediate/Build/Linux/x64/UnrealEditor/Development/proj_may/proj_may.cpp.o"
+"/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Intermediate/Build/Linux/x64/UnrealEditor/Development/proj_may/PerModuleInline.gen.cpp.o"
+ -soname="libUnrealEditor-proj_may.so"
+ -rpath-link="/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/Binaries/Linux"
+ -L"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Binaries/Linux"
+ --start-group
+ --end-group

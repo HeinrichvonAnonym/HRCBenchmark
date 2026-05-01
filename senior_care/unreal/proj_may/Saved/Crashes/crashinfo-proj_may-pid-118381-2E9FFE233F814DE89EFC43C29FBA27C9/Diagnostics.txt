@@ -1,0 +1,66 @@
+Generating report for minidump
+
+Application version 5.6.1.0
+ ... built from changelist 44394996
+
+OS version Linux 6.8.0-110-generic (network name: heinrich-Precision-5820-Tower-X-Series)
+Running 10 x86_64 processors (20 logical cores)
+Exception was "SIGSEGV: invalid attempt to write memory at address 0x0000000000000003"
+
+<SOURCE START>
+<SOURCE END>
+
+<CALLSTACK START>
+libUnrealEditor-CoreUObject.so!StaticFindObjectFast(UClass*, UObject*, FName, bool, EObjectFlags, EInternalObjectFlags) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/UObjectGlobals.cpp:479]
+libUnrealEditor-Engine.so!UE::Transaction::FPersistentObjectRef::Get() const [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/TransactionCommon.cpp:103]
+libUnrealEditor-UnrealEd.so!FTransaction::FObjectRecord::ContainsPieObject() const [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorTransaction.cpp:633]
+libUnrealEditor-UnrealEd.so!FTransaction::IsTransient() const [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorTransaction.cpp:520]
+libUnrealEditor-UnrealEd.so!UTransBuffer::End() [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorTransaction.cpp:1324]
+libUnrealEditor-UnrealEd.so!UEditorEngine::EndTransaction() [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorServer.cpp:1108]
+libUnrealEditor-UnrealEd.so!FScopedTransaction::~FScopedTransaction() [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/ScopedTransaction.cpp:35]
+libUnrealEditor-UnrealEd.so!UUnrealEdEngine::Exec_Actor(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/UnrealEdSrv.cpp:2311]
+libUnrealEditor-UnrealEd.so!UUnrealEdEngine::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/UnrealEdSrv.cpp:725]
+libUnrealEditor-LevelEditor.so!FLevelEditorActionCallbacks::ExecuteExecCommand(FString) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/LevelEditor/Private/LevelEditorActions.cpp:2173]
+libUnrealEditor-Core.so!decltype(auto) UE::Core::Private::Tuple::TTupleBase<TIntegerSequence<unsigned int, 0u>, FString>::ApplyAfter<void (* const&)(FString)>(void (* const&&&)(FString)) const & [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Templates/Invoke.h:47]
+libUnrealEditor-Core.so!TBaseStaticDelegateInstance<void (), FDefaultDelegateUserPolicy, FString>::ExecuteIfSafe() const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateInstancesImpl.h:799]
+libUnrealEditor-Slate.so!FUICommandList::ConditionalProcessCommandBindings(FKey, bool, bool, bool, bool, bool) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Delegates/DelegateSignatureImpl.inl:635]
+libUnrealEditor-Slate.so!FUICommandList::ProcessCommandBindings(FKeyEvent const&) const [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Commands/UICommandList.cpp:178]
+libUnrealEditor-LevelEditor.so!SLevelEditor::OnKeyDown(FGeometry const&, FKeyEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/LevelEditor/Private/SLevelEditor.cpp:1841]
+libUnrealEditor-Slate.so!FSlateApplication::ProcessKeyDownEvent(FKeyEvent const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:4849]
+libUnrealEditor-Slate.so!FSlateApplication::OnKeyDown(int, unsigned int, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:4756]
+libUnrealEditor-ApplicationCore.so!FLinuxApplication::ProcessDeferredMessage(SDL_Event) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxApplication.cpp:321]
+libUnrealEditor-ApplicationCore.so!FLinuxPlatformApplicationMisc::PumpMessages(bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/ApplicationCore/Private/Linux/LinuxApplication.cpp:237]
+libUnrealEditor-Slate.so!FSlateApplication::TickPlatform(float) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:1618]
+libUnrealEditor-Slate.so!FSlateApplication::Tick(ESlateTickType) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Slate/Private/Framework/Application/SlateApplication.cpp:1560]
+libUnrealEditor-UnrealEd.so!TickSlate(TSharedPtr<SWindow, (ESPMode)1>) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FeedbackContextEditor.cpp:428]
+libUnrealEditor-UnrealEd.so!FFeedbackContextEditor::ProgressReported(float, FText) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FeedbackContextEditor.cpp:600]
+libUnrealEditor-Core.so!FFeedbackContext::UpdateUI() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Misc/FeedbackContext.cpp:205]
+libUnrealEditor-Core.so!FFeedbackContext::RequestUpdateUI(bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Misc/FeedbackContext.cpp:195]
+libUnrealEditor-Core.so!FSlowTask::TickProgress() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Misc/SlowTask.cpp:214]
+libUnrealEditor-CoreUObject.so!(anonymous namespace)::WriteExports(FStructuredArchiveRecord&, FSaveContext&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/SavePackage2.cpp:2529]
+libUnrealEditor-CoreUObject.so!(anonymous namespace)::SaveHarvestedRealms(FSaveContext&, ESaveRealm) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/SavePackage2.cpp:3508]
+libUnrealEditor-CoreUObject.so!(anonymous namespace)::InnerSave(FSaveContext&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/SavePackage2.cpp:3670]
+libUnrealEditor-CoreUObject.so!UPackage::Save2(UPackage*, UObject*, char16_t const*, FSavePackageArgs const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/SavePackage2.cpp:3817]
+libUnrealEditor-CoreUObject.so!UPackage::Save(UPackage*, UObject*, char16_t const*, FSavePackageArgs const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/CoreUObject/Private/UObject/SavePackage.cpp:20]
+libUnrealEditor-UnrealEd.so!UEditorEngine::Save(UPackage*, UObject*, char16_t const*, FSavePackageArgs const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorEngine.cpp:4469]
+libUnrealEditor-UnrealEd.so!UEditorEngine::SavePackage(UPackage*, UObject*, char16_t const*, FSavePackageArgs const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorEngine.cpp:4534]
+libUnrealEditor-UnrealEd.so!UEditorEngine::Exec_Obj(char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorServer.cpp:4665]
+libUnrealEditor-UnrealEd.so!UEditorEngine::Exec_Editor(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/EditorServer.cpp:5738]
+libUnrealEditor-Core.so!FExec::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Misc/Exec.cpp:18]
+libUnrealEditor-Engine.so!UEngine::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Engine/Private/UnrealEngine.cpp:5143]
+libUnrealEditor-UnrealEd.so!UUnrealEdEngine::Exec(UWorld*, char16_t const*, FOutputDevice&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/UnrealEdSrv.cpp:662]
+libUnrealEditor-UnrealEd.so!FEditorFileUtils::AutosaveContentPackagesEx(FString const&, int, bool, TSet<TWeakObjectPtr<UPackage, FWeakObjectPtr>, TWeakObjectPtrSetKeyFuncs<TWeakObjectPtr<UPackage, FWeakObjectPtr>, false>, FDefaultSetAllocator> const&) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/FileHelpers.cpp:3333]
+libUnrealEditor-UnrealEd.so!FPackageAutoSaver::AttemptAutoSave(bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/PackageAutoSaver.cpp:353]
+libUnrealEditor-UnrealEd.so!UUnrealEdEngine::Tick(float, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Editor/UnrealEd/Private/UnrealEdEngine.cpp:557]
+UnrealEditor!FEngineLoop::Tick() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/LaunchEngineLoop.cpp:5619]
+UnrealEditor!GuardedMain(char16_t const*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Launch/Private/Launch.cpp:60]
+libUnrealEditor-UnixCommonStartup.so!CommonUnixMain(int, char**, int (*)(char16_t const*), void (*)()) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Unix/UnixCommonStartup/Private/UnixCommonStartup.cpp:323]
+libc.so.6!UnknownFunction(0x29d8f)
+libc.so.6!__libc_start_main(+0x7f)
+UnrealEditor!_start [/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Binaries/Linux/UnrealEditor:-1]
+
+<CALLSTACK END>
+
+0 loaded modules
+
+Report end!

@@ -1,0 +1,28 @@
+{
+	"configurations": [
+		{
+			"name": "proj_mayEditor Editor Linux Development (proj_may)",
+			"compilerPath": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"compilerArgs": [
+				"-isysroot",
+				"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu"
+			],
+			"cStandard": "c17",
+			"cppStandard": "c++20",
+			"intelliSenseMode": "clang-x64",
+			"compileCommands": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_proj_may.json"
+		},
+		{
+			"name": "Linux",
+			"compilerPath": "/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu/bin/clang++",
+			"compilerArgs": [
+				"-isysroot",
+				"/home/heinrich/third_party/Linux_Unreal_Engine_5.6.1/Engine/Extras/ThirdPartyNotUE/SDKs/HostLinux/Linux_x64/v25_clang-18.1.0-rockylinux8/x86_64-unknown-linux-gnu"
+			],
+			"cStandard": "c17",
+			"cppStandard": "c++20",
+			"intelliSenseMode": "clang-x64",
+			"compileCommands": "/home/heinrich/RoboLab/python/benchmark/senior_care/unreal/proj_may/.vscode/compileCommands_Default.json"
+		}
+	]
+}

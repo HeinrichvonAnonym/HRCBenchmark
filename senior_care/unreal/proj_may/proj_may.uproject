@@ -1,0 +1,27 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.6",
+	"Category": "",
+	"Description": "Minimal MuJoCo + ZMQ skeletal-streaming demo. Reuses the MuJoCoUE plugin from MuJoCo-UE5-Linux-plugin via symlink.",
+	"Modules": [
+		{
+			"Name": "proj_may",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "MuJoCoUE",
+			"Enabled": true
+		},
+		{
+			"Name": "PythonScriptPlugin",
+			"Enabled": true
+		},
+		{
+			"Name": "EditorScriptingUtilities",
+			"Enabled": true
+		}
+	]
+}

@@ -1,0 +1,302 @@
+MODULE Linux x86_64 CD17A3E0F84DDDDD00000000000000000 libUnrealEditor-MyProject3.so
+INFO CODE_ID E0A317CD4DF8DDDD
+FILE 0 /home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Source/MyProject3/MyProject3.cpp
+FILE 1 /home/heinrich/roboLab/third_party/UnrealEngine/Engine/Source/Runtime/Core/Public/Compression/CompressedBuffer.h
+FILE 2 /home/heinrich/roboLab/third_party/UnrealEngine/Engine/Source/Runtime/Core/Public/Math/IntPoint.h
+FILE 3 /home/heinrich/roboLab/third_party/UnrealEngine/Engine/Source/Runtime/Core/Public/Math/IntVector.h
+FILE 4 /home/heinrich/roboLab/third_party/UnrealEngine/Engine/Source/Runtime/Core/Public/Memory/CompositeBuffer.h
+FILE 5 /home/heinrich/roboLab/third_party/UnrealEngine/Engine/Source/Runtime/Core/Public/Modules/ModuleInterface.h
+FILE 6 /home/heinrich/roboLab/third_party/UnrealEngine/Engine/Source/Runtime/Core/Public/Modules/ModuleManager.h
+FILE 7 /home/heinrich/roboLab/third_party/UnrealEngine/Engine/Source/Runtime/CoreUObject/Public/Serialization/DerivedData.h
+FUNC 2d40 20 0 InitializeModule
+2d40 1 6 0
+2d41 f 6 0
+2d50 e 6 0
+2d5e 2 6 0
+FUNC 2d60 16 0 operator new(unsigned long)
+2d60 16 6 0
+FUNC 2d80 1 0 IMPLEMENT_MODULE_MyProject3
+2d80 1 6 0
+FUNC 2d90 16 0 operator new[](unsigned long)
+2d90 16 6 0
+FUNC 2db0 21 0 operator new(unsigned long, std::nothrow_t const&)
+2db0 1 6 0
+2db1 20 6 0
+FUNC 2de0 21 0 operator new[](unsigned long, std::nothrow_t const&)
+2de0 1 6 0
+2de1 20 6 0
+FUNC 2e10 11 0 operator new(unsigned long, std::align_val_t)
+2e10 11 6 0
+FUNC 2e30 11 0 operator new[](unsigned long, std::align_val_t)
+2e30 11 6 0
+FUNC 2e50 1c 0 operator new(unsigned long, std::align_val_t, std::nothrow_t const&)
+2e50 1 6 0
+2e51 1b 6 0
+FUNC 2e70 1c 0 operator new[](unsigned long, std::align_val_t, std::nothrow_t const&)
+2e70 1 6 0
+2e71 1b 6 0
+FUNC 2e90 10 0 operator delete(void*)
+2e90 1 6 0
+2e91 f 6 0
+FUNC 2ea0 10 0 operator delete[](void*)
+2ea0 1 6 0
+2ea1 f 6 0
+FUNC 2eb0 10 0 operator delete(void*, std::nothrow_t const&)
+2eb0 1 6 0
+2eb1 f 6 0
+FUNC 2ec0 10 0 operator delete[](void*, std::nothrow_t const&)
+2ec0 1 6 0
+2ec1 f 6 0
+FUNC 2ed0 10 0 operator delete(void*, unsigned long)
+2ed0 1 6 0
+2ed1 f 6 0
+FUNC 2ee0 10 0 operator delete[](void*, unsigned long)
+2ee0 1 6 0
+2ee1 f 6 0
+FUNC 2ef0 10 0 operator delete(void*, unsigned long, std::nothrow_t const&)
+2ef0 1 6 0
+2ef1 f 6 0
+FUNC 2f00 10 0 operator delete[](void*, unsigned long, std::nothrow_t const&)
+2f00 1 6 0
+2f01 f 6 0
+FUNC 2f10 10 0 operator delete(void*, std::align_val_t)
+2f10 1 6 0
+2f11 f 6 0
+FUNC 2f20 10 0 operator delete[](void*, std::align_val_t)
+2f20 1 6 0
+2f21 f 6 0
+FUNC 2f30 10 0 operator delete(void*, std::align_val_t, std::nothrow_t const&)
+2f30 1 6 0
+2f31 f 6 0
+FUNC 2f40 10 0 operator delete[](void*, std::align_val_t, std::nothrow_t const&)
+2f40 1 6 0
+2f41 f 6 0
+FUNC 2f50 10 0 operator delete(void*, unsigned long, std::align_val_t)
+2f50 1 6 0
+2f51 f 6 0
+FUNC 2f60 10 0 operator delete[](void*, unsigned long, std::align_val_t)
+2f60 1 6 0
+2f61 f 6 0
+FUNC 2f70 10 0 operator delete(void*, unsigned long, std::align_val_t, std::nothrow_t const&)
+2f70 1 6 0
+2f71 f 6 0
+FUNC 2f80 10 0 operator delete[](void*, unsigned long, std::align_val_t, std::nothrow_t const&)
+2f80 1 6 0
+2f81 f 6 0
+FUNC 2f90 27 0 __cxx_global_var_init.45
+2f90 9 0 0
+2f99 1 526 3
+2f9a b 526 3
+2fa5 a 526 3
+2faf 7 0 0
+2fb6 1 526 3
+FUNC 2fc0 1d 0 __cxx_global_var_init.46
+2fc0 9 0 0
+2fc9 1 489 2
+2fca b 489 2
+2fd5 7 0 0
+2fdc 1 489 2
+FUNC 2ff0 60 0 __cxx_global_var_init.49
+2ff0 b 0 0
+2ffb 2 144 4
+2ffd 10 0 0
+300d 12 144 4
+301f a 144 4
+3029 7 144 4
+3030 20 0 0
+FUNC 3050 60 0 __cxx_global_var_init.50
+3050 b 0 0
+305b 2 158 1
+305d 10 0 0
+306d 12 158 1
+307f a 158 1
+3089 7 158 1
+3090 20 0 0
+FUNC 30b0 44 0 __cxx_global_var_init.52
+30b0 44 0 0
+FUNC 3100 2ef 0 <name omitted>
+3100 7 0 0
+3107 a 0 0
+3111 a 0 0
+311b 19 0 0
+3134 1c 0 0
+3150 16 0 0
+3166 18 0 0
+317e 18 0 0
+3196 18 0 0
+31ae 18 0 0
+31c6 18 0 0
+31de e 0 0
+31ec e 0 0
+31fa e 0 0
+3208 e 0 0
+3216 e 0 0
+3224 e 0 0
+3232 e 0 0
+3240 e 0 0
+324e e 0 0
+325c e 0 0
+326a e 0 0
+3278 e 0 0
+3286 e 0 0
+3294 e 0 0
+32a2 e 0 0
+32b0 e 0 0
+32be e 0 0
+32cc e 0 0
+32da e 0 0
+32e8 e 0 0
+32f6 e 0 0
+3304 e 0 0
+3312 e 0 0
+3320 e 0 0
+332e e 0 0
+333c 1c 0 0
+3358 15 0 0
+336d 7 0 0
+3374 18 0 0
+338c 7 0 0
+3393 18 0 0
+33ab 18 0 0
+33c3 18 0 0
+33db c 0 0
+33e7 8 0 0
+FUNC 33f0 bf 0 FCompositeBuffer::~FCompositeBuffer()
+33f0 b 29 4
+33fb 4 29 4
+33ff 7 29 4
+3406 2 29 4
+3408 3 29 4
+340b 7 29 4
+3412 e 29 4
+3420 7 29 4
+3427 2 29 4
+3429 4 29 4
+342d 3 29 4
+3430 2 29 4
+3432 d 29 4
+343f 8 29 4
+3447 2 29 4
+3449 a 29 4
+3453 8 29 4
+345b d 29 4
+3468 9 29 4
+3471 2 29 4
+3473 a 29 4
+347d 2 29 4
+347f 7 29 4
+3486 2 29 4
+3488 8 29 4
+3490 f 29 4
+349f 8 29 4
+34a7 8 29 4
+FUNC 34b0 bf 0 FCompressedBuffer::~FCompressedBuffer()
+34b0 b 34 1
+34bb 4 34 1
+34bf 7 34 1
+34c6 2 34 1
+34c8 3 34 1
+34cb 7 34 1
+34d2 e 34 1
+34e0 7 34 1
+34e7 2 34 1
+34e9 4 34 1
+34ed 3 34 1
+34f0 2 34 1
+34f2 d 34 1
+34ff 8 34 1
+3507 2 34 1
+3509 a 34 1
+3513 8 34 1
+351b d 34 1
+3528 9 34 1
+3531 2 34 1
+3533 a 34 1
+353d 2 34 1
+353f 7 34 1
+3546 2 34 1
+3548 8 34 1
+3550 f 34 1
+355f 8 34 1
+3567 8 34 1
+FUNC 3570 1a 0 UE::FDerivedData::~FDerivedData()
+3570 1 81 7
+3571 6 81 7
+3577 2 81 7
+3579 4 81 7
+357d 3 81 7
+3580 2 81 7
+3582 8 81 7
+FUNC 3590 1 0 IModuleInterface::~IModuleInterface()
+3590 1 23 5
+FUNC 35a0 10 0 FDefaultGameModuleImpl::~FDefaultGameModuleImpl()
+35a0 1 728 6
+35a1 5 728 6
+35a6 2 728 6
+35a8 8 728 6
+FUNC 35b0 1 0 IModuleInterface::StartupModule()
+35b0 1 33 5
+FUNC 35c0 1 0 IModuleInterface::PreUnloadCallback()
+35c0 1 40 5
+FUNC 35d0 1 0 IModuleInterface::PostLoadCallback()
+35d0 1 47 5
+FUNC 35e0 1 0 IModuleInterface::ShutdownModule()
+35e0 1 57 5
+FUNC 35f0 3 0 IModuleInterface::SupportsDynamicReloading()
+35f0 3 66 5
+FUNC 3600 3 0 IModuleInterface::SupportsAutomaticShutdown()
+3600 3 76 5
+FUNC 3610 3 0 FDefaultGameModuleImpl::IsGameModule() const
+3610 3 738 6
+PUBLIC 2c40 0 deregister_tm_clones
+PUBLIC 2c6c 0 register_tm_clones
+PUBLIC 2ca8 0 __do_global_dtors_aux
+PUBLIC 2d17 0 frame_dummy
+PUBLIC 2d40 0 InitializeModule
+PUBLIC 2d60 0 operator new(unsigned long)
+PUBLIC 2d80 0 IMPLEMENT_MODULE_MyProject3
+PUBLIC 2d90 0 operator new[](unsigned long)
+PUBLIC 2db0 0 operator new(unsigned long, std::nothrow_t const&)
+PUBLIC 2de0 0 operator new[](unsigned long, std::nothrow_t const&)
+PUBLIC 2e10 0 operator new(unsigned long, std::align_val_t)
+PUBLIC 2e30 0 operator new[](unsigned long, std::align_val_t)
+PUBLIC 2e50 0 operator new(unsigned long, std::align_val_t, std::nothrow_t const&)
+PUBLIC 2e70 0 operator new[](unsigned long, std::align_val_t, std::nothrow_t const&)
+PUBLIC 2e90 0 operator delete(void*)
+PUBLIC 2ea0 0 operator delete[](void*)
+PUBLIC 2eb0 0 operator delete(void*, std::nothrow_t const&)
+PUBLIC 2ec0 0 operator delete[](void*, std::nothrow_t const&)
+PUBLIC 2ed0 0 operator delete(void*, unsigned long)
+PUBLIC 2ee0 0 operator delete[](void*, unsigned long)
+PUBLIC 2ef0 0 operator delete(void*, unsigned long, std::nothrow_t const&)
+PUBLIC 2f00 0 operator delete[](void*, unsigned long, std::nothrow_t const&)
+PUBLIC 2f10 0 operator delete(void*, std::align_val_t)
+PUBLIC 2f20 0 operator delete[](void*, std::align_val_t)
+PUBLIC 2f30 0 operator delete(void*, std::align_val_t, std::nothrow_t const&)
+PUBLIC 2f40 0 operator delete[](void*, std::align_val_t, std::nothrow_t const&)
+PUBLIC 2f50 0 operator delete(void*, unsigned long, std::align_val_t)
+PUBLIC 2f60 0 operator delete[](void*, unsigned long, std::align_val_t)
+PUBLIC 2f70 0 operator delete(void*, unsigned long, std::align_val_t, std::nothrow_t const&)
+PUBLIC 2f80 0 operator delete[](void*, unsigned long, std::align_val_t, std::nothrow_t const&)
+PUBLIC 2f90 0 __cxx_global_var_init.45
+PUBLIC 2fc0 0 __cxx_global_var_init.46
+PUBLIC 2fe0 0 __clang_call_terminate
+PUBLIC 2ff0 0 __cxx_global_var_init.49
+PUBLIC 3050 0 __cxx_global_var_init.50
+PUBLIC 30b0 0 __cxx_global_var_init.52
+PUBLIC 3100 0 _GLOBAL__sub_I_MyProject3.cpp
+PUBLIC 33f0 0 FCompositeBuffer::~FCompositeBuffer()
+PUBLIC 34b0 0 FCompressedBuffer::~FCompressedBuffer()
+PUBLIC 3570 0 UE::FDerivedData::~FDerivedData()
+PUBLIC 3590 0 IModuleInterface::~IModuleInterface()
+PUBLIC 35a0 0 FDefaultGameModuleImpl::~FDefaultGameModuleImpl()
+PUBLIC 35b0 0 IModuleInterface::StartupModule()
+PUBLIC 35c0 0 IModuleInterface::PreUnloadCallback()
+PUBLIC 35d0 0 IModuleInterface::PostLoadCallback()
+PUBLIC 35e0 0 IModuleInterface::ShutdownModule()
+PUBLIC 35f0 0 IModuleInterface::SupportsDynamicReloading()
+PUBLIC 3600 0 IModuleInterface::SupportsAutomaticShutdown()
+PUBLIC 3610 0 FDefaultGameModuleImpl::IsGameModule() const
+PUBLIC 3613 0 __do_global_ctors_aux
+PUBLIC 3638 0 _init
+PUBLIC 365c 0 _fini

@@ -1,0 +1,10 @@
+{
+	"SourceFiles": [
+		"/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Source/MyProject3/MyProject3.Build.cs",
+		"/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Plugins/MuJoCo-UE5-Linux-plugin/Plugins/MuJoCoUE/Source/MuJoCoUE/MuJoCoUE.Build.cs",
+		"/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Plugins/SeniorCareBridge/Source/SeniorCareBridge/SeniorCareBridge.Build.cs",
+		"/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Source/MyProject3.Target.cs",
+		"/home/heinrich/roboLab/python/benchmark/senior_care/unreal/MyProject3/Source/MyProject3Editor.Target.cs"
+	],
+	"EngineVersion": "5.1.0"
+}
