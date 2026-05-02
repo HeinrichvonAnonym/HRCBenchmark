@@ -1,0 +1,40 @@
+Generating report for minidump
+
+Application version 5.6.1.0
+ ... built from changelist 44394996
+
+OS version Linux 6.8.0-110-generic (network name: heinrich-Precision-5820-Tower-X-Series)
+Running 10 x86_64 processors (20 logical cores)
+Exception was "SIGSEGV: unaligned memory access at address 0x0000000000000000 (SIMD vectors?)"
+
+<SOURCE START>
+<SOURCE END>
+
+<CALLSTACK START>
+libnvidia-glcore.so.595.58.03!UnknownFunction(0xe269f5)
+libnvidia-glcore.so.595.58.03!UnknownFunction(0xe2af56)
+libnvidia-glcore.so.595.58.03!UnknownFunction(0xd3a88d)
+libUnrealEditor-VulkanRHI.so!VulkanRHI::FFenceManager::WaitForFence(VulkanRHI::FFence*, unsigned long long) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/VulkanRHI/Private/VulkanMemory.cpp:4645]
+libUnrealEditor-VulkanRHI.so!FVulkanSwapChain::AcquireImageIndex(VulkanRHI::FSemaphore**) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/VulkanRHI/Private/VulkanSwapChain.cpp:738]
+libUnrealEditor-VulkanRHI.so!FVulkanViewport::Present(FVulkanCommandListContext&, FVulkanQueue*, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/VulkanRHI/Private/VulkanViewport.cpp:217]
+libUnrealEditor-VulkanRHI.so!FVulkanCommandListContext::RHIEndDrawingViewport(FRHIViewport*, bool, bool) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/VulkanRHI/Private/VulkanRHI.cpp:1273]
+libUnrealEditor-RHI.so!FRHICommand<FRHICommandEndDrawingViewport, FRHICommandEndDrawingViewportString2524>::ExecuteAndDestruct(FRHICommandListBase&) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/RHI/Public/RHICommandListCommandExecutes.inl:591]
+libUnrealEditor-RHI.so!FRHICommandListBase::Execute() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/RHI/Private/RHICommandList.cpp:527]
+libUnrealEditor-RHI.so!FRHICommandListExecutor::FTranslateState::Translate(FRHICommandListBase*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/RHI/Private/RHICommandList.cpp:1077]
+libUnrealEditor-RHI.so!UE::Core::Private::Function::TFunctionRefCaller<FRHICommandListExecutor::FSubmitState::Dispatch(FRHICommandListBase*)::$_0, void>::Call(void*) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/RHI/Private/RHICommandList.cpp:1028]
+libUnrealEditor-RHI.so!FRHICommandListExecutor::FTaskPipe::Execute(FRHICommandListExecutor::FTaskPipe::FTask*, TRefCountPtr<FBaseGraphTask> const&) const [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Templates/Function.h:471]
+libUnrealEditor-Core.so!TGraphTask<TFunctionGraphTaskImpl<void (ENamedThreads::Type, TRefCountPtr<FBaseGraphTask> const&), (ESubsequentsMode::Type)0> >::ExecuteTask() [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Templates/Function.h:471]
+libUnrealEditor-Core.so!UE::Tasks::Private::FTaskBase::TryExecuteTask() [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Tasks/TaskPrivate.h:527]
+libUnrealEditor-Core.so!FNamedTaskThread::ProcessTasksNamedThread(int, bool) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Public/Async/TaskGraphInterfaces.h:505]
+libUnrealEditor-Core.so!FNamedTaskThread::ProcessTasksUntilQuit(int) [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/Async/TaskGraph.cpp:667]
+libUnrealEditor-RenderCore.so!FRHIThread::Run() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/RenderCore/Private/RenderingThread.cpp:270]
+libUnrealEditor-Core.so!FRunnableThreadPThread::Run() [/mnt/horde/++UE5/Sync/Engine/Source/./Runtime/Core/Private/HAL/PThreadRunnableThread.cpp:25]
+libUnrealEditor-Core.so!FRunnableThreadPThread::_ThreadProc(void*) [/mnt/horde/++UE5/Sync/Engine/Source/Runtime/Core/Private/HAL/PThreadRunnableThread.h:187]
+libc.so.6!UnknownFunction(0x94ac2)
+libc.so.6!UnknownFunction(0x1268cf)
+
+<CALLSTACK END>
+
+0 loaded modules
+
+Report end!

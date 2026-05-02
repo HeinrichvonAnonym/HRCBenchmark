@@ -182,10 +182,9 @@ private:
 				const double X = (*RootPos)[0]->AsNumber();
 				const double Y = (*RootPos)[1]->AsNumber();
 				const double Z = (*RootPos)[2]->AsNumber();
-				// MuJoCo (m) -> UE (cm). No axis flip; the Python
-				// setup script picks placement, this is just a
-				// passthrough for the driver.
-				Frame->RootPosition = FVector(X * 100.0, Y * 100.0, Z * 100.0);
+				// MuJoCo (m) -> UE (cm). Negate Y for handedness:
+				// MuJoCo is right-handed (Y left), UE is left-handed (Y right).
+				Frame->RootPosition = FVector(X * 100.0, -Y * 100.0, Z * 100.0);
 			}
 
 			// root_orientation [w,x,y,z]
@@ -197,7 +196,8 @@ private:
 				const double X = (*RootOri)[1]->AsNumber();
 				const double Y = (*RootOri)[2]->AsNumber();
 				const double Z = (*RootOri)[3]->AsNumber();
-				Frame->RootOrientation = FQuat(X, Y, Z, W);
+				// Negate Y for handedness conversion (MuJoCo right-handed -> UE left-handed).
+				Frame->RootOrientation = FQuat(X, -Y, Z, W);
 			}
 
 			// joints: { joint_name: value_rad }

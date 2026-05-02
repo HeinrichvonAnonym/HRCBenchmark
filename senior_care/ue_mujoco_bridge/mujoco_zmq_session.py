@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import math
 import re
 from typing import TYPE_CHECKING, Any
 
@@ -23,47 +22,6 @@ def _normalize_joint_name(name: str) -> str:
     return re.sub(r"_ball$", "", name)
 
 
-def _quat_to_euler_xyz(quat: list[float]) -> list[float]:
-    """Convert MuJoCo quaternion [w,x,y,z] to Euler angles [rx, ry, rz] (XYZ order).
-
-    Returns intrinsic XYZ Euler angles in radians.
-    """
-    w, x, y, z = quat
-
-    # Roll (x-axis rotation)
-    sinr_cosp = 2.0 * (w * x + y * z)
-    cosr_cosp = 1.0 - 2.0 * (x * x + y * y)
-    rx = math.atan2(sinr_cosp, cosr_cosp)
-
-    # Pitch (y-axis rotation)
-    sinp = 2.0 * (w * y - z * x)
-    if abs(sinp) >= 1.0:
-        ry = math.copysign(math.pi / 2.0, sinp)
-    else:
-        ry = math.asin(sinp)
-
-    # Yaw (z-axis rotation)
-    siny_cosp = 2.0 * (w * z + x * y)
-    cosy_cosp = 1.0 - 2.0 * (y * y + z * z)
-    rz = math.atan2(siny_cosp, cosy_cosp)
-
-    return [rx, ry, rz]
-
-
-def _transform_joint_angle(axis_index: int, value: float) -> float:
-    """Transform joint angle from MuJoCo to UE coordinate system.
-
-    Coordinate transform T = diag(1, -1, 1) (only Y flips):
-    - Rotation around X (index 0): X direction identical in both systems → unchanged
-    - Rotation around Y (index 1): Y_mujoco = -Y_ue → negate
-    - Rotation around Z (index 2): Z direction identical in both systems → unchanged
-    """
-    if axis_index == 1:  # Y axis only
-        return -value
-    else:  # X and Z are the same direction in both systems
-        return value
-
-
 class MujocoZmqSession(ZmqSession):
     """Wraps a ZMQ PUB socket that publishes per-step simulation state.
 
@@ -81,6 +39,13 @@ class MujocoZmqSession(ZmqSession):
     ----------
     address : ZMQ bind address, e.g. ``tcp://*:5556``.
     """
+
+    # Diagnostic: log ball-joint details every N frames (None to disable).
+    DIAG_LOG_EVERY = 120  # roughly once per second at 120Hz
+    # Which human joints to log in detail (bone tokens, not "_ball" suffix).
+    DIAG_JOINT_NAMES: tuple[str, ...] = (
+        "l_shoulder", "r_shoulder", "l_elbow", "r_elbow", "neck",
+    )
 
     def __init__(self, address: str = "tcp://*:5556") -> None:
         super().__init__(address)
@@ -121,10 +86,17 @@ class MujocoZmqSession(ZmqSession):
         """
         self._seq += 1
         assets_data: dict[str, dict] = {}
+        should_diag_log = (
+            self.DIAG_LOG_EVERY is not None
+            and self._seq % self.DIAG_LOG_EVERY == 0
+        )
 
         for asset_name, asset in assets.items():
             root_pos: list[float] = data.xpos[asset.root_body_id].tolist()
             root_ori: list[float] = data.xquat[asset.root_body_id].tolist()
+
+            is_human_for_diag = _is_human_asset(asset_name) and should_diag_log
+            diag_lines: list[str] = []
 
             joints: dict[str, float] = {}
             for channel in asset.observation_channels:
@@ -132,16 +104,26 @@ class MujocoZmqSession(ZmqSession):
                 base_name = _normalize_joint_name(channel.name)
                 if isinstance(val, list):
                     if len(val) == 4:
-                        # Ball joint: quaternion [w,x,y,z] -> Euler XYZ
-                        euler = _quat_to_euler_xyz(val)
-                        for i, v in enumerate(euler):
-                            transformed = _transform_joint_angle(i, v)
-                            joints[f"{base_name}_{i}"] = float(transformed)
+                        # Ball joint: quaternion [w,x,y,z] in MuJoCo's
+                        # right-handed Z-up frame.  Pass the raw values
+                        # straight through; the C++ bridge does the proper
+                        # RH→LH handedness conversion (negate x and z, keep y)
+                        # in one place.
+                        w, x, y, z = val
+                        joints[f"{base_name}_w"] = float(w)
+                        joints[f"{base_name}_x"] = float(x)
+                        joints[f"{base_name}_y"] = float(y)
+                        joints[f"{base_name}_z"] = float(z)
+                        if is_human_for_diag and base_name in self.DIAG_JOINT_NAMES:
+                            diag_lines.append(
+                                f"  {base_name}: quat_mujoco=("
+                                f"{w:+.3f},{x:+.3f},{y:+.3f},{z:+.3f}) "
+                                f"-> quat_ue=({w:+.3f},{-x:+.3f},{y:+.3f},{-z:+.3f}) [done in C++]"
+                            )
                     else:
-                        # Other multi-DOF joint
+                        # Other multi-DOF joint (rare)
                         for i, v in enumerate(val):
-                            transformed = _transform_joint_angle(i, v)
-                            joints[f"{base_name}_{i}"] = float(transformed)
+                            joints[f"{base_name}_{i}"] = float(v)
                 else:
                     joints[base_name] = float(val)
 
@@ -152,6 +134,33 @@ class MujocoZmqSession(ZmqSession):
                     "position": data.xpos[body_id].tolist(),
                     "orientation": data.xquat[body_id].tolist(),
                 }
+
+            if is_human_for_diag:
+                # Dump per-body WORLD quats for the diagnostic joints. The
+                # C++ world-quat driver consumes these directly; printing them
+                # here makes it trivial to cross-check the UE
+                # ``[DIAG WQUAT]`` log against the publisher.
+                for diag_name in self.DIAG_JOINT_NAMES:
+                    bt = bone_transforms.get(diag_name)
+                    if not bt:
+                        continue
+                    bw, bx, by, bz = bt["orientation"]
+                    diag_lines.append(
+                        f"  {diag_name}: world_mujoco=("
+                        f"{bw:+.3f},{bx:+.3f},{by:+.3f},{bz:+.3f}) "
+                        f"-> world_ue=({bw:+.3f},{-bx:+.3f},{by:+.3f},{-bz:+.3f}) [done in C++]"
+                    )
+
+            if is_human_for_diag and diag_lines:
+                print(
+                    f"[mujoco_zmq_session DIAG seq={self._seq}] "
+                    f"{asset_name} root_pos=({root_pos[0]:+.3f},"
+                    f"{root_pos[1]:+.3f},{root_pos[2]:+.3f}) "
+                    f"root_ori=({root_ori[0]:+.3f},{root_ori[1]:+.3f},"
+                    f"{root_ori[2]:+.3f},{root_ori[3]:+.3f})\n"
+                    + "\n".join(diag_lines),
+                    flush=True,
+                )
 
             frame_cls = HumanFrame if _is_human_asset(asset_name) else RobotFrame
             assets_data[asset_name] = frame_cls(
@@ -165,4 +174,5 @@ class MujocoZmqSession(ZmqSession):
 
 
 def _is_human_asset(asset_name: str) -> bool:
-    return any(keyword in asset_name.lower() for keyword in ("human", "smpl", "person", "body"))
+    # Include "simpl" because our asset is named "simpl_neutral" (typo kept for back-compat).
+    return any(keyword in asset_name.lower() for keyword in ("human", "smpl", "simpl", "person", "body"))

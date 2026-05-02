@@ -31,7 +31,10 @@ from typing import Any, Iterable
 
 import unreal  # type: ignore[import-not-found]
 
-from benchmark.senior_care.base.scene.ue_scene import UeAssetSpec, UeScene
+from benchmark.senior_care.base.scene.ue_scene import (
+    UeAssetSpec,
+    UeScene,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -337,6 +340,12 @@ class UeAssetLoader:
                     driver.set_component_tick_enabled(True)
                 if hasattr(driver, "activate"):
                     driver.activate(True)
+                # Set fix_base so driver knows whether to update root transform.
+                if hasattr(driver, "set_fix_base"):
+                    driver.set_fix_base(spec.fix_base)
+                    unreal.log(
+                        f"[UeAssetLoader] '{spec.name}' set_fix_base({spec.fix_base})"
+                    )
                 unreal.log(
                     f"[UeAssetLoader] '{spec.name}' driver tick enabled "
                     f"(is_active={getattr(driver, 'is_active', lambda: '?')() if hasattr(driver, 'is_active') else '?'})"
@@ -625,18 +634,20 @@ class UeAssetLoader:
                 ...
             }
 
-        For ball joints (SMPL-X human model), MuJoCo sends 3 values per joint
-        (e.g. neck_0, neck_1, neck_2 for rotations around x, y, z axes).
-        We generate 3 mapping entries for each ball joint.
+        For ball joints (SMPL-X human model), MuJoCo sends the full rotation
+        as a quaternion (4 values: w, x, y, z). We generate 4 mapping entries
+        per ball joint with axes 'w'/'x'/'y'/'z'; the C++ driver collects all
+        four into a quaternion and applies the parent-bind-frame formula
+        (FinalLocal = ParentWorldRest^-1 * Q_ue * ParentWorldRest * BindRot).
 
         For revolute joints (Franka robot), we use a single mapping with
-        the default Z axis.
+        the default axis.
         """
+        is_human = "smpl" in str(spec.mujoco_model_path or "").lower()
         joint_order: list[str] = list(spec.joint_order or spec.selected_joints)
+
         seen_joints: set[str] = set()
         out: dict[str, dict[str, str]] = {}
-
-        is_human = "smpl" in str(spec.mujoco_model_path or "").lower()
 
         for joint_name in joint_order:
             if joint_name in seen_joints:
@@ -648,9 +659,10 @@ class UeAssetLoader:
                 continue
 
             if is_human:
-                out[f"{joint_name}_0"] = {"bone": actual_bone, "axis": "x"}
-                out[f"{joint_name}_1"] = {"bone": actual_bone, "axis": "y"}
-                out[f"{joint_name}_2"] = {"bone": actual_bone, "axis": "z"}
+                out[f"{joint_name}_w"] = {"bone": actual_bone, "axis": "w"}
+                out[f"{joint_name}_x"] = {"bone": actual_bone, "axis": "x"}
+                out[f"{joint_name}_y"] = {"bone": actual_bone, "axis": "y"}
+                out[f"{joint_name}_z"] = {"bone": actual_bone, "axis": "z"}
             else:
                 out[joint_name] = {"bone": actual_bone, "axis": _DEFAULT_JOINT_AXIS}
         return out

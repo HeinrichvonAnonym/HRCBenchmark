@@ -10370,22 +10370,6 @@
 			"Type": "SymbolFile"
 		},
 		{
-			"Path": "$(EngineDir)/Plugins/Tests/FunctionalTestingEditor/Binaries/Linux/UnrealEditor.modules",
-			"Type": "RequiredResource"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Tests/FunctionalTestingEditor/Binaries/Linux/libUnrealEditor-FunctionalTestingEditor.debug",
-			"Type": "SymbolFile"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Tests/FunctionalTestingEditor/Binaries/Linux/libUnrealEditor-FunctionalTestingEditor.so",
-			"Type": "DynamicLibrary"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Tests/FunctionalTestingEditor/Binaries/Linux/libUnrealEditor-FunctionalTestingEditor.sym",
-			"Type": "SymbolFile"
-		},
-		{
 			"Path": "$(EngineDir)/Plugins/Tests/InterchangeTests/Binaries/Linux/UnrealEditor.modules",
 			"Type": "RequiredResource"
 		},
@@ -10411,22 +10395,6 @@
 		},
 		{
 			"Path": "$(EngineDir)/Plugins/Tests/InterchangeTests/Binaries/Linux/libUnrealEditor-InterchangeTests.sym",
-			"Type": "SymbolFile"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Tests/PythonAutomationTest/Binaries/Linux/UnrealEditor.modules",
-			"Type": "RequiredResource"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Tests/PythonAutomationTest/Binaries/Linux/libUnrealEditor-PythonAutomationTest.debug",
-			"Type": "SymbolFile"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Tests/PythonAutomationTest/Binaries/Linux/libUnrealEditor-PythonAutomationTest.so",
-			"Type": "DynamicLibrary"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Tests/PythonAutomationTest/Binaries/Linux/libUnrealEditor-PythonAutomationTest.sym",
 			"Type": "SymbolFile"
 		},
 		{
@@ -28308,10 +28276,6 @@
 			"Type": "UFS"
 		},
 		{
-			"Path": "$(EngineDir)/Plugins/Experimental/PythonFoundationPackages/PythonFoundationPackages.uplugin",
-			"Type": "UFS"
-		},
-		{
 			"Path": "$(EngineDir)/Plugins/Experimental/PythonScriptPlugin/PythonScriptPlugin.uplugin",
 			"Type": "UFS"
 		},
@@ -28640,15 +28604,7 @@
 			"Type": "UFS"
 		},
 		{
-			"Path": "$(EngineDir)/Plugins/Tests/FunctionalTestingEditor/FunctionalTestingEditor.uplugin",
-			"Type": "UFS"
-		},
-		{
 			"Path": "$(EngineDir)/Plugins/Tests/InterchangeTests/InterchangeTests.uplugin",
-			"Type": "UFS"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Tests/PythonAutomationTest/PythonAutomationTest.uplugin",
 			"Type": "UFS"
 		},
 		{
@@ -28752,7 +28708,6 @@
 		"FastBuildController",
 		"Fracture",
 		"FullBodyIK",
-		"FunctionalTestingEditor",
 		"GLTFExporter",
 		"GameplayCameras",
 		"GameplayInsights",
@@ -28833,8 +28788,6 @@
 		"PropertyAccessNode",
 		"PropertyBindingUtils",
 		"ProxyLODPlugin",
-		"PythonAutomationTest",
-		"PythonFoundationPackages",
 		"PythonScriptPlugin",
 		"RenderDocPlugin",
 		"RenderGraphInsights",

@@ -8,7 +8,9 @@
 
 #include "Components/PoseableMeshComponent.h"
 #include "Editor.h"
+#include "Engine/SkeletalMesh.h"
 #include "GameFramework/Actor.h"
+#include "ReferenceSkeleton.h"
 
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonReader.h"
@@ -27,8 +29,12 @@ namespace
 
 	/**
 	 * Build a rotation of <Value> radians around the given local axis.
-	 * Mirrors the convention used by the original
-	 * Python-side _radians_to_unreal_rotator.
+	 *
+	 * Coordinate system conversion: MuJoCo uses right-handed (Y left),
+	 * UE uses left-handed (Y right). This means:
+	 *   - X axis rotation: same direction → no sign flip
+	 *   - Y axis rotation: opposite direction → NEGATE
+	 *   - Z axis rotation: same direction → no sign flip
 	 */
 	FRotator AxisAngleToRotator(double ValueRad, TCHAR Axis)
 	{
@@ -36,12 +42,12 @@ namespace
 		switch (Axis)
 		{
 		case TEXT('x'):
-		case TEXT('X'): return FRotator(0.0, 0.0, Deg);            // Roll
+		case TEXT('X'): return FRotator(0.0, 0.0, Deg);            // Roll (X unchanged)
 		case TEXT('y'):
-		case TEXT('Y'): return FRotator(Deg, 0.0, 0.0);            // Pitch
+		case TEXT('Y'): return FRotator(-Deg, 0.0, 0.0);           // Pitch (Y negated for handedness)
 		case TEXT('z'):
 		case TEXT('Z'):
-		default:        return FRotator(0.0, Deg, 0.0);            // Yaw
+		default:        return FRotator(0.0, Deg, 0.0);            // Yaw (Z unchanged)
 		}
 	}
 }
@@ -99,6 +105,44 @@ UPoseableMeshComponent* UMuJoCoDrivenSkeletonComponent::ResolvePoseable()
 	UPoseableMeshComponent* P = Owner->FindComponentByClass<UPoseableMeshComponent>();
 	CachedPoseable = P;
 	return P;
+}
+
+void UMuJoCoDrivenSkeletonComponent::CaptureInitialPose(UPoseableMeshComponent* Poseable)
+{
+	if (!Poseable || bHasCapturedInitialPose)
+	{
+		return;
+	}
+
+	InitialBoneTransforms = Poseable->BoneSpaceTransforms;
+	bHasCapturedInitialPose = true;
+
+	// Build cumulative world-space bind rotations by walking the
+	// reference skeleton hierarchy. Needed for quaternion ball-joint
+	// application (see ApplyLatestFrame).
+	InitialBoneWorldRotations.Reset();
+	USkinnedAsset* SkinnedAsset = Poseable->GetSkinnedAsset();
+	if (SkinnedAsset)
+	{
+		const FReferenceSkeleton& RefSkel = SkinnedAsset->GetRefSkeleton();
+		const int32 NumBones = RefSkel.GetNum();
+		InitialBoneWorldRotations.SetNum(NumBones);
+		for (int32 i = 0; i < NumBones; ++i)
+		{
+			const int32 ParentIdx = RefSkel.GetParentIndex(i);
+			const FQuat ParentWorld = (ParentIdx >= 0 && ParentIdx < InitialBoneWorldRotations.Num())
+				? InitialBoneWorldRotations[ParentIdx]
+				: FQuat::Identity;
+			const FQuat BoneLocalRest = (i < InitialBoneTransforms.Num())
+				? InitialBoneTransforms[i].GetRotation()
+				: FQuat::Identity;
+			InitialBoneWorldRotations[i] = ParentWorld * BoneLocalRest;
+		}
+	}
+
+	UE_LOG(LogSeniorCareBridge, Log,
+	       TEXT("[Driver:%s] captured initial pose (%d bones, %d world rotations)"),
+	       *AssetName, InitialBoneTransforms.Num(), InitialBoneWorldRotations.Num());
 }
 
 void UMuJoCoDrivenSkeletonComponent::SetBoneNameMappingJson(const FString& Json)
@@ -224,10 +268,54 @@ void UMuJoCoDrivenSkeletonComponent::ApplyLatestFrame(float DeltaSeconds)
 	}
 	LastAppliedSeq = Frame.Seq;
 
+	// Apply root transform for non-fixed-base assets (e.g. human body).
+	// Fixed-base assets (e.g. robot arm) keep their spawned position.
+	if (!bFixBase)
+	{
+		AActor* Owner = GetOwner();
+		if (Owner)
+		{
+			// Compose RootOrientationOffset with the MuJoCo root quaternion.
+			// The offset is applied FIRST (brings the FBX bind pose from
+			// standing/vertical to the MuJoCo rest pose's horizontal
+			// orientation), then the MuJoCo root rotation is applied on
+			// top so the character follows physics-driven root motion.
+			const FQuat Offset = RootOrientationOffset.Quaternion();
+			const FQuat FinalActorQuat = Frame.RootOrientation * Offset;
+
+			Owner->SetActorLocation(Frame.RootPosition);
+			Owner->SetActorRotation(FinalActorQuat.Rotator());
+
+			// Diag every ~1s at 120Hz so we can verify the composition
+			// and tune RootOrientationOffset live if the sign/axis is off.
+			if ((Frame.Seq % 120) == 0)
+			{
+				const FRotator InE = Frame.RootOrientation.Rotator();
+				const FRotator FinalE = FinalActorQuat.Rotator();
+				UE_LOG(LogSeniorCareBridge, Log,
+				       TEXT("[Driver:%s][ROOT seq=%lld] raw=(P%+.1f,Y%+.1f,R%+.1f) "
+				            "offset=(P%+.1f,Y%+.1f,R%+.1f) "
+				            "final=(P%+.1f,Y%+.1f,R%+.1f)"),
+				       *AssetName, Frame.Seq,
+				       InE.Pitch, InE.Yaw, InE.Roll,
+				       RootOrientationOffset.Pitch,
+				       RootOrientationOffset.Yaw,
+				       RootOrientationOffset.Roll,
+				       FinalE.Pitch, FinalE.Yaw, FinalE.Roll);
+			}
+		}
+	}
+
 	UPoseableMeshComponent* Poseable = ResolvePoseable();
 	if (!Poseable)
 	{
 		return;
+	}
+
+	// Capture bind pose on first frame so we can apply rotations on top of it.
+	if (!bHasCapturedInitialPose)
+	{
+		CaptureInitialPose(Poseable);
 	}
 
 	if (JointDriveMap.Num() == 0)
@@ -242,6 +330,23 @@ void UMuJoCoDrivenSkeletonComponent::ApplyLatestFrame(float DeltaSeconds)
 		}
 		return;
 	}
+
+	// Collect per-bone rotation components. 'w' axis means quaternion
+	// mode (full rotation in parent world frame, for ball joints).
+	// 'x'/'y'/'z' alone means axis-angle (legacy, for revolute joints).
+	struct FBoneRotationAccum
+	{
+		int32 BoneIdx = INDEX_NONE;
+		double RotW = 1.0;
+		double RotX = 0.0;
+		double RotY = 0.0;
+		double RotZ = 0.0;
+		bool bHasW = false;
+		bool bHasX = false;
+		bool bHasY = false;
+		bool bHasZ = false;
+	};
+	TMap<FName, FBoneRotationAccum> BoneAccum;
 
 	int32 Applied = 0;
 	int32 Missed = 0;
@@ -266,32 +371,95 @@ void UMuJoCoDrivenSkeletonComponent::ApplyLatestFrame(float DeltaSeconds)
 			++Missed;
 			continue;
 		}
-		const FRotator Rot = AxisAngleToRotator(Value, Entry->Axis);
 
-		// Drive the bone in PARENT-LOCAL space by overwriting the
-		// BoneSpaceTransforms entry. UPoseableMeshComponent stores
-		// per-bone local transforms here; the renderer composes them
-		// into a world pose during refresh. ComponentSpace input via
-		// SetBoneRotationByName has subtle offset semantics and ends
-		// up not visibly moving anything, so we go direct.
-		if (BoneIdx >= 0 && BoneIdx < Poseable->BoneSpaceTransforms.Num())
+		FBoneRotationAccum& Accum = BoneAccum.FindOrAdd(Entry->BoneName);
+		Accum.BoneIdx = BoneIdx;
+		switch (Entry->Axis)
 		{
-			FTransform LocalT = Poseable->BoneSpaceTransforms[BoneIdx];
-			LocalT.SetRotation(Rot.Quaternion());
-			Poseable->BoneSpaceTransforms[BoneIdx] = LocalT;
-			if (Applied == 0)
+		case TEXT('w'):
+		case TEXT('W'):
+			Accum.RotW = Value; Accum.bHasW = true; break;
+		case TEXT('x'):
+		case TEXT('X'):
+			Accum.RotX = Value; Accum.bHasX = true; break;
+		case TEXT('y'):
+		case TEXT('Y'):
+			Accum.RotY = Value; Accum.bHasY = true; break;
+		case TEXT('z'):
+		case TEXT('Z'):
+		default:
+			Accum.RotZ = Value; Accum.bHasZ = true; break;
+		}
+	}
+
+	const FReferenceSkeleton* RefSkel = nullptr;
+	if (USkinnedAsset* SkinnedAsset = Poseable->GetSkinnedAsset())
+	{
+		RefSkel = &SkinnedAsset->GetRefSkeleton();
+	}
+
+	for (const auto& AccumPair : BoneAccum)
+	{
+		const FBoneRotationAccum& Accum = AccumPair.Value;
+		const int32 BoneIdx = Accum.BoneIdx;
+		if (BoneIdx < 0 || BoneIdx >= Poseable->BoneSpaceTransforms.Num()
+		    || BoneIdx >= InitialBoneTransforms.Num())
+		{
+			++Missed;
+			continue;
+		}
+
+		const FQuat InitialRot = InitialBoneTransforms[BoneIdx].GetRotation();
+		FQuat FinalRot;
+
+		if (Accum.bHasW)
+		{
+			// Quaternion mode: (w, x, y, z) already handedness-flipped
+			// in Python. Apply with parent-frame formula:
+			//   FinalLocal = ParentWorldRest^-1 * Q_ue * ParentWorldRest * BindRot
+			const FQuat QuatUe(Accum.RotX, Accum.RotY, Accum.RotZ, Accum.RotW);
+			FQuat ParentWorldRest = FQuat::Identity;
+			if (RefSkel)
 			{
-				FirstAppliedDiag = FString::Printf(
-					TEXT("first: joint='%s' bone='%s' axis=%c value=%.3frad rot=(%.1f,%.1f,%.1f)deg idx=%d"),
-					*JointName, *Entry->BoneName.ToString(), Entry->Axis,
-					Value, Rot.Pitch, Rot.Yaw, Rot.Roll, BoneIdx);
+				const int32 ParentIdx = RefSkel->GetParentIndex(BoneIdx);
+				if (ParentIdx >= 0 && ParentIdx < InitialBoneWorldRotations.Num())
+				{
+					ParentWorldRest = InitialBoneWorldRotations[ParentIdx];
+				}
 			}
-			++Applied;
+			FinalRot = ParentWorldRest.Inverse() * QuatUe * ParentWorldRest * InitialRot;
 		}
 		else
 		{
-			++Missed;
+			// Axis-angle mode (legacy for revolute joints like Franka).
+			FQuat CombinedDelta = FQuat::Identity;
+			if (Accum.bHasX)
+			{
+				CombinedDelta = CombinedDelta * AxisAngleToRotator(Accum.RotX, TEXT('x')).Quaternion();
+			}
+			if (Accum.bHasY)
+			{
+				CombinedDelta = CombinedDelta * AxisAngleToRotator(Accum.RotY, TEXT('y')).Quaternion();
+			}
+			if (Accum.bHasZ)
+			{
+				CombinedDelta = CombinedDelta * AxisAngleToRotator(Accum.RotZ, TEXT('z')).Quaternion();
+			}
+			FinalRot = InitialRot * CombinedDelta;
 		}
+
+		FTransform LocalT = Poseable->BoneSpaceTransforms[BoneIdx];
+		LocalT.SetRotation(FinalRot);
+		Poseable->BoneSpaceTransforms[BoneIdx] = LocalT;
+		if (Applied == 0)
+		{
+			FirstAppliedDiag = FString::Printf(
+				TEXT("first: bone='%s' idx=%d hasWXYZ=(%d,%d,%d,%d)"),
+				*AccumPair.Key.ToString(), BoneIdx,
+				Accum.bHasW ? 1 : 0, Accum.bHasX ? 1 : 0,
+				Accum.bHasY ? 1 : 0, Accum.bHasZ ? 1 : 0);
+		}
+		++Applied;
 	}
 
 	if (Applied > 0)
