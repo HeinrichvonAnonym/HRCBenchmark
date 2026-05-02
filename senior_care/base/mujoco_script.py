@@ -1,13 +1,17 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 from dataclasses import dataclass, field
 from fractions import Fraction
 from pathlib import Path
 import re
+import threading
 import time
 from typing import Any, Mapping, Sequence
+
+from google.protobuf.message import DecodeError
 
 import mujoco
 import numpy as np
@@ -21,6 +25,59 @@ from benchmark.senior_care.base.scene.mujoco_scene import MujocoScene, attach_mu
 WORKSPACE_ROOT = Path(__file__).resolve().parents[3]
 REPO_ROOT = Path(__file__).resolve().parents[4]
 _PACKAGE_URI_PATTERN = re.compile(r"package://([^/]+)/")
+
+
+_LOG = logging.getLogger(__name__)
+
+_DEFAULT_FRANKA_CMD_TOPIC = "franka/command"
+_DEFAULT_FRANKA_STATE_TOPIC = "franka/state"
+
+CMD_TOPIC_DEFAULT = _DEFAULT_FRANKA_CMD_TOPIC
+STATE_TOPIC_DEFAULT = _DEFAULT_FRANKA_STATE_TOPIC
+
+
+class _ZenohFrankaCmdBuffer:
+    """Thread-safe store for the latest franka RobotCommand joint targets (wire format)."""
+
+    def __init__(self, franka_pb2_module: Any) -> None:
+        self._pb = franka_pb2_module
+        self._lock = threading.Lock()
+        self._q7: tuple[float, ...] | None = None
+        self._last_cmd_mode = "position"
+
+    def ingest(
+        self, raw: bytes
+    ) -> tuple[str, tuple[float, ...] | None, int, int, str]:
+        cmd = self._pb.RobotCommand()
+        try:
+            cmd.ParseFromString(raw)
+        except DecodeError:
+            return ("protobuf_decode_failed", None, 0, 0, "")
+        nj = len(cmd.joints)
+        if nj != 7:
+            return (f"joints_need_7_got_{nj}", None, 0, 0, "")
+        q = tuple(float(cmd.joints[i].position) for i in range(7))
+        md = (cmd.mode or "").strip() or "position"
+        with self._lock:
+            self._q7 = q
+            self._last_cmd_mode = md
+        return ("ok", q, int(cmd.type), int(cmd.sequence), cmd.mode or "")
+
+    def arm_targets(self) -> tuple[float, ...] | None:
+        with self._lock:
+            return self._q7
+
+    def state_mode_label(self) -> str:
+        with self._lock:
+            return self._last_cmd_mode
+
+
+def _zenoh_payload_to_bytes(payload: object) -> bytes:
+    if hasattr(payload, "to_bytes"):
+        return payload.to_bytes()  # type: ignore[no-any-return]
+    if isinstance(payload, (bytes, bytearray)):
+        return bytes(payload)
+    return bytes(payload)  # type: ignore[arg-type]
 
 
 @dataclass(frozen=True)
@@ -115,7 +172,11 @@ class SeniorCareEnv:
         self,
         config_path: str | Path,
         *,
-        zenoh_publish: bool = True,
+        zenoh_publish: bool = False,
+        zenoh_franka_topics: bool = True,
+        zenoh_cmd_topic: str = _DEFAULT_FRANKA_CMD_TOPIC,
+        zenoh_state_topic: str = _DEFAULT_FRANKA_STATE_TOPIC,
+        zenoh_connect_endpoints: Sequence[str] | None = None,
         zmq_publish: bool = False,
         zmq_address: str = "tcp://localhost:5556",
     ) -> None:
@@ -127,13 +188,22 @@ class SeniorCareEnv:
         self.assets: dict[str, AssetRuntime] = {}
 
         self._zenoh_publish = zenoh_publish
+        self._zenoh_franka_topics = zenoh_franka_topics
+        self._zenoh_cmd_topic = str(zenoh_cmd_topic)
+        self._zenoh_state_topic = str(zenoh_state_topic)
+        self._zenoh_connect_endpoints = list(zenoh_connect_endpoints or [])
+
         self._zenoh_session = None
+        self._zenoh_sub_handles: list[Any] = []
         self._zenoh_pub_franka_cmd = None
-        self._zenoh_pub_franka_state = None
+        self._zenoh_pub_franka_state_legacy = None
+        self._zenoh_pub_wire_franka_state = None
         self._zenoh_pub_human = None
         self._zenoh_seq = 0
+        self._franka_wire_state_seq = 0
         self._franka_pb2 = None
         self._demo_inference_pb2 = None
+        self._franka_cmd_buf: _ZenohFrankaCmdBuffer | None = None
         self._franka_zenoh_asset: str | None = None
         self._human_zenoh_asset: str | None = None
 
@@ -147,12 +217,14 @@ class SeniorCareEnv:
             for asset_name in self.action_asset_names
             if asset_name in self.assets
         }
+        self._pick_zenoh_asset_names()
         self.reset()
 
-        if zenoh_publish:
-            self._setup_zenoh_publish()
+        if self._zenoh_franka_topics or self._zenoh_publish:
+            self._setup_zenoh()
         if zmq_publish:
             from benchmark.senior_care.ue_mujoco_bridge import MujocoZmqSession
+
             self._zmq_session = MujocoZmqSession(zmq_address)
             self._zmq_session.open_pub()
 
@@ -186,6 +258,8 @@ class SeniorCareEnv:
 
     def step(self, action: Mapping[str, Any] | ActionMessage) -> dict[str, dict[str, object]]:
         action_message = ActionMessage.from_any(action)
+        if self._zenoh_franka_topics and self._franka_cmd_buf is not None:
+            self._overlay_zenoh_franka_targets(action_message)
         commanded_qpos = self.data.qpos.copy()
         applied_force = np.zeros(self.model.nv, dtype=float)
 
@@ -233,6 +307,8 @@ class SeniorCareEnv:
         self.data.qfrc_applied[:] = applied_force
         mujoco.mj_step(self.model, self.data)
         obs_dict = self._build_observation().to_dict()
+        if self._zenoh_pub_wire_franka_state is not None and self._franka_pb2 is not None:
+            self._publish_wire_franka_state()
         if self._zenoh_publish:
             self._zenoh_publish_step(action_message)
         if self._zmq_session is not None:
@@ -243,43 +319,155 @@ class SeniorCareEnv:
         if self._zenoh_session is not None:
             self._zenoh_session.close()
             self._zenoh_session = None
+        self._zenoh_sub_handles.clear()
+        self._zenoh_pub_franka_cmd = None
+        self._zenoh_pub_franka_state_legacy = None
+        self._zenoh_pub_wire_franka_state = None
+        self._zenoh_pub_human = None
+        self._franka_cmd_buf = None
         if self._zmq_session is not None:
             self._zmq_session.close()
             self._zmq_session = None
 
-    def _setup_zenoh_publish(self) -> None:
+    def _pick_zenoh_asset_names(self) -> None:
+        for name in self.action_asset_names:
+            if name in self.assets and self.assets[name].selected_channels:
+                self._franka_zenoh_asset = name
+                break
+        if "simpl_neutral" in self.assets:
+            self._human_zenoh_asset = "simpl_neutral"
+
+    def _overlay_zenoh_franka_targets(self, action_message: ActionMessage) -> None:
+        name = self._franka_zenoh_asset
+        if name is None or self._franka_cmd_buf is None:
+            return
+        q7 = self._franka_cmd_buf.arm_targets()
+        if q7 is None:
+            return
+        aa = action_message.assets.get(name)
+        if aa is None:
+            asset_rt = self.assets[name]
+            aa = AssetAction(position={ch.name: 0.0 for ch in asset_rt.selected_channels})
+            action_message.assets[name] = aa
+        asset_rt = self.assets[name]
+        for i, channel in enumerate(asset_rt.selected_channels[:7]):
+            aa.position[channel.name] = float(q7[i])
+
+    def _publish_wire_franka_state(self) -> None:
+        franka_name = self._franka_zenoh_asset
+        if franka_name is None:
+            return
+        assert self._franka_pb2 is not None
+        assert self._zenoh_pub_wire_franka_state is not None
+        assert self._franka_cmd_buf is not None
+        pb = self._franka_pb2
+        asset = self.assets[franka_name]
+        arm_channels = asset.selected_channels[:7]
+        obs = pb.RobotObservation()
+        obs.type = 2
+        self._franka_wire_state_seq += 1
+        obs.sequence = self._franka_wire_state_seq
+        obs.mode = self._franka_cmd_buf.state_mode_label()
+        obs.note = "senior_care_mujoco_wire"
+        obs.sys_time = float(self.data.time)
+        obs.ClearField("joints")
+        for ch in arm_channels:
+            jo = obs.joints.add()
+            jo.position = _scalar_for_zenoh(ch.read_position(self.data.qpos))
+            jo.velocity = _scalar_for_zenoh(ch.read_velocity(self.data.qvel))
+            jo.effort = _scalar_for_zenoh(ch.read_effort(self.data.qfrc_applied))
+        while len(obs.joints) < 7:
+            jo = obs.joints.add()
+            jo.position = 0.0
+            jo.velocity = 0.0
+            jo.effort = 0.0
+        self._zenoh_pub_wire_franka_state.put(obs.SerializeToString())
+
+    def _setup_zenoh(self) -> None:
         os.environ.setdefault("PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION", "python")
-        from robo_lab.proto_gen import demo_inference_pb2
-        from robo_lab.proto_gen import franka_pb2
 
         try:
             import zenoh
         except ImportError as e:
             raise RuntimeError(
-                "SeniorCareEnv(zenoh_publish=True) requires eclipse-zenoh (pip install eclipse-zenoh)."
+                "Zenoh-enabled SeniorCareEnv requires eclipse-zenoh (pip install eclipse-zenoh). "
+                "Pass zenoh_franka_topics=False and zenoh_publish=False to disable Zenoh.",
             ) from e
 
-        self._franka_pb2 = franka_pb2
-        self._demo_inference_pb2 = demo_inference_pb2
+        from robo_lab.proto_gen import franka_pb2 as fr_pb2_mod
 
-        for name in self.action_asset_names:
-            if name in self.assets and self.assets[name].selected_channels:
-                self._franka_zenoh_asset = name
-                break
-
-        self._human_zenoh_asset = "simpl_neutral" if "simpl_neutral" in self.assets else None
+        self._franka_pb2 = fr_pb2_mod
 
         conf = zenoh.Config()
         if os.environ.get("ROBO_LAB_ZENOH_MULTICAST_SCOUTING") == "0":
             conf.insert_json5("scouting/multicast/enabled", json.dumps(False))
-        self._zenoh_session = zenoh.open(conf)
-        self._zenoh_pub_franka_cmd = self._zenoh_session.declare_publisher("franka/command")
-        self._zenoh_pub_franka_state = self._zenoh_session.declare_publisher("franka/state")
-        self._zenoh_pub_human = self._zenoh_session.declare_publisher("HumanState")
+        if self._zenoh_connect_endpoints:
+            conf.insert_json5("connect/endpoints", json.dumps(self._zenoh_connect_endpoints))
+
+        session = zenoh.open(conf)
+        self._zenoh_session = session
+
+        cmd_tag = self._zenoh_cmd_topic
+        legacy_franka_echo = self._zenoh_publish and not self._zenoh_franka_topics
+
+        if self._zenoh_franka_topics:
+            buf = _ZenohFrankaCmdBuffer(fr_pb2_mod)
+            self._franka_cmd_buf = buf
+            self._franka_wire_state_seq = 0
+
+            def _on_wire_cmd(sample: Any) -> None:
+                raw = _zenoh_payload_to_bytes(sample.payload)
+                log = _LOG
+                if log.isEnabledFor(logging.INFO):
+                    log.info(
+                        "[%s] recv key_expr=%s nbytes=%d",
+                        cmd_tag,
+                        str(sample.key_expr),
+                        len(raw),
+                    )
+                reason, q7, cmd_type, sequence, modestr = buf.ingest(raw)
+                if reason != "ok":
+                    log.warning("[%s] not applied: %s (nbytes=%d)", cmd_tag, reason, len(raw))
+                    return
+                assert q7 is not None
+                log.info(
+                    "[%s] applied type=%s seq=%s mode=%r q[:3]=%s q[4:7]=%s",
+                    cmd_tag,
+                    cmd_type,
+                    sequence,
+                    modestr,
+                    [round(q7[i], 4) for i in range(3)],
+                    [round(q7[i], 4) for i in range(4, 7)],
+                )
+
+            self._zenoh_sub_handles.append(session.declare_subscriber(self._zenoh_cmd_topic, _on_wire_cmd))
+            self._zenoh_pub_wire_franka_state = session.declare_publisher(self._zenoh_state_topic)
+
+        if self._zenoh_publish:
+            human_ok = self._human_zenoh_asset is not None
+            if human_ok:
+                from robo_lab.proto_gen import demo_inference_pb2 as di_pb2
+
+                self._demo_inference_pb2 = di_pb2
+                self._zenoh_pub_human = session.declare_publisher("HumanState")
+            else:
+                self._demo_inference_pb2 = None
+                self._zenoh_pub_human = None
+
+            if legacy_franka_echo:
+                self._zenoh_pub_franka_cmd = session.declare_publisher(self._zenoh_cmd_topic)
+                self._zenoh_pub_franka_state_legacy = session.declare_publisher(self._zenoh_state_topic)
+            else:
+                self._zenoh_pub_franka_cmd = None
+                self._zenoh_pub_franka_state_legacy = None
+        else:
+            self._demo_inference_pb2 = None
+            self._zenoh_pub_human = None
+            self._zenoh_pub_franka_cmd = None
+            self._zenoh_pub_franka_state_legacy = None
 
     def _zenoh_publish_step(self, action_message: ActionMessage) -> None:
         assert self._franka_pb2 is not None
-        assert self._demo_inference_pb2 is not None
         self._zenoh_seq += 1
         seq = self._zenoh_seq
         t_wall = time.time()
@@ -287,6 +475,7 @@ class SeniorCareEnv:
 
         franka_name = self._franka_zenoh_asset
         if franka_name is not None and self._zenoh_pub_franka_cmd is not None:
+            assert self._zenoh_pub_franka_state_legacy is not None
             asset = self.assets[franka_name]
             asset_action = action_message.assets.get(
                 franka_name,
@@ -330,10 +519,11 @@ class SeniorCareEnv:
                 jo.position = 0.0
                 jo.velocity = 0.0
                 jo.effort = 0.0
-            self._zenoh_pub_franka_state.put(obs_msg.SerializeToString())
+            self._zenoh_pub_franka_state_legacy.put(obs_msg.SerializeToString())
 
         human_name = self._human_zenoh_asset
         if human_name is not None and self._zenoh_pub_human is not None:
+            assert self._demo_inference_pb2 is not None
             hasset = self.assets[human_name]
             human_obs = self._demo_inference_pb2.Observation()
             flat: list[float] = []

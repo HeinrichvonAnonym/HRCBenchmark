@@ -151,16 +151,16 @@ class MujocoZmqSession(ZmqSession):
                         f"-> world_ue=({bw:+.3f},{-bx:+.3f},{by:+.3f},{-bz:+.3f}) [done in C++]"
                     )
 
-            if is_human_for_diag and diag_lines:
-                print(
-                    f"[mujoco_zmq_session DIAG seq={self._seq}] "
-                    f"{asset_name} root_pos=({root_pos[0]:+.3f},"
-                    f"{root_pos[1]:+.3f},{root_pos[2]:+.3f}) "
-                    f"root_ori=({root_ori[0]:+.3f},{root_ori[1]:+.3f},"
-                    f"{root_ori[2]:+.3f},{root_ori[3]:+.3f})\n"
-                    + "\n".join(diag_lines),
-                    flush=True,
-                )
+            # if is_human_for_diag and diag_lines:
+            #     print(
+            #         f"[mujoco_zmq_session DIAG seq={self._seq}] "
+            #         f"{asset_name} root_pos=({root_pos[0]:+.3f},"
+            #         f"{root_pos[1]:+.3f},{root_pos[2]:+.3f}) "
+            #         f"root_ori=({root_ori[0]:+.3f},{root_ori[1]:+.3f},"
+            #         f"{root_ori[2]:+.3f},{root_ori[3]:+.3f})\n"
+            #         + "\n".join(diag_lines),
+            #         flush=True,
+            #     )
 
             frame_cls = HumanFrame if _is_human_asset(asset_name) else RobotFrame
             assets_data[asset_name] = frame_cls(
