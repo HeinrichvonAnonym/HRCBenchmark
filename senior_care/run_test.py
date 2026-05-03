@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import logging
 import sys
 from pathlib import Path
 
@@ -11,16 +10,27 @@ sys.path.insert(0, str(os_env))
 from benchmark.senior_care.base.mujoco_script import (  # noqa: E402
     CMD_TOPIC_DEFAULT,
     STATE_TOPIC_DEFAULT,
-    SeniorCareEnv,
+)
+from benchmark.senior_care.mujoco_runner import (  # noqa: E402
+    MujocoRunner,
+    MujocoRunnerConfig,
 )
 
 
 def main() -> None:
+    _default_config = Path(__file__).resolve().parent / "config" / "demo.yaml"
     parser = argparse.ArgumentParser(
         description=(
             "SeniorCare demo runner: Zenoh franka/command + franka/state and ZMQ UE are configured "
             "inside SeniorCareEnv by default."
         ),
+    )
+    parser.add_argument(
+        "--config",
+        dest="config_path",
+        type=Path,
+        default=_default_config,
+        help=f"YAML config for SeniorCareEnv (default: {_default_config})",
     )
     parser.add_argument("--render", action="store_true", help="MuJoCo viewer")
     parser.add_argument("--steps", type=int, default=2_000_000, help="max steps")
@@ -34,6 +44,24 @@ def main() -> None:
         "--zmq-address",
         default="tcp://localhost:5556",
         help="ZMQ PUB bind/connect address for UE bridge",
+    )
+    parser.add_argument(
+        "--view-camera", "--view_camera",
+        dest="view_camera",
+        action="store_true",
+        help=(
+            "Subscribe to virtual camera RGBD frames from UE and display them "
+            "via OpenCV (requires opencv-python). Implies --zmq-publish."
+        ),
+    )
+    parser.add_argument(
+        "--zmq-camera-address", "--zmq_camera_address",
+        dest="zmq_camera_address",
+        default="tcp://localhost:5557",
+        help=(
+            "ZMQ SUB connect address for RGBD camera frames published by UE "
+            "(default: tcp://localhost:5557)"
+        ),
     )
     parser.add_argument(
         "--no-franka-wire",
@@ -63,49 +91,8 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    logging.basicConfig(
-        level=getattr(logging, args.log_level.upper(), logging.INFO),
-        format="%(asctime)s [%(levelname)s] %(message)s",
-        datefmt="%H:%M:%S",
-        force=True,
-    )
-
-    config_path = Path(__file__).resolve().parent / "config" / "demo.yaml"
-    env = SeniorCareEnv(
-        config_path,
-        zenoh_publish=args.zenoh_scene_publish,
-        zenoh_franka_topics=not args.no_franka_wire,
-        zenoh_cmd_topic=args.cmd_topic,
-        zenoh_state_topic=args.state_topic,
-        zenoh_connect_endpoints=args.connect if args.connect else None,
-        zmq_publish=True,
-        zmq_address=args.zmq_address,
-    )
-    env.reset()
-    action = env.home_action()
-
-    print(
-        f"Zenoh (env): cmd={args.cmd_topic!r} state={args.state_topic!r}  "
-        f"franka_topics={not args.no_franka_wire} "
-        f"scene_publish={args.zenoh_scene_publish}  zmq={args.zmq_address!r}",
-    )
-
-    try:
-        if args.render:
-            import mujoco.viewer
-
-            with mujoco.viewer.launch_passive(env.model, env.data) as viewer:
-                n = 0
-                while n < args.steps and viewer.is_running():
-                    with viewer.lock():
-                        env.step(action)
-                    viewer.sync()
-                    n += 1
-        else:
-            for _ in range(args.steps):
-                env.step(action)
-    finally:
-        env.close()
+    config = MujocoRunnerConfig.from_argparse(args)
+    MujocoRunner(config).start()
 
 
 if __name__ == "__main__":

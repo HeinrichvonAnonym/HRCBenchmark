@@ -1,16 +1,19 @@
-"""MuJoCo-side ZMQ publisher – extracts simulation state and sends it to UE."""
+"""MuJoCo-side ZMQ session – publishes simulation state to UE and receives
+RGBD camera frames streamed back from UE."""
 
 from __future__ import annotations
 
 import re
 from typing import TYPE_CHECKING, Any
 
+from .camera_signal import CameraFrame
 from .human_cmd import HumanFrame
 from .robot_cmd import RobotFrame
 from .zmq_session import ZmqSession
 
 if TYPE_CHECKING:
     import mujoco
+    import zmq
 
 
 def _normalize_joint_name(name: str) -> str:
@@ -50,6 +53,7 @@ class MujocoZmqSession(ZmqSession):
     def __init__(self, address: str = "tcp://*:5556") -> None:
         super().__init__(address)
         self._seq = 0
+        self._camera_socket: zmq.Socket | None = None  # type: ignore[type-arg]
 
     def publish_step(
         self,
@@ -171,6 +175,60 @@ class MujocoZmqSession(ZmqSession):
             ).to_dict()
 
         self.send_json({"seq": self._seq, "assets": assets_data})
+
+    # ------------------------------------------------------------------
+    # Camera channel (SUB) — receives RGBD frames published by UE
+    # ------------------------------------------------------------------
+
+    def open_camera_sub(
+        self,
+        address: str = "tcp://localhost:5557",
+        *,
+        recv_timeout_ms: int = 10,
+    ) -> None:
+        """Open a SUB socket to receive RGBD camera frames from UE.
+
+        Parameters
+        ----------
+        address : ZMQ address of the UE camera PUB socket, e.g.
+            ``tcp://localhost:5557``.
+        recv_timeout_ms : Receive timeout; short (10 ms default) so that
+            ``recv_camera_frame`` is non-blocking for the simulation loop.
+        """
+        import zmq as _zmq
+
+        self._camera_socket = self._get_context().socket(_zmq.SUB)
+        self._camera_socket.setsockopt(_zmq.SUBSCRIBE, b"")
+        self._camera_socket.setsockopt(_zmq.RCVTIMEO, recv_timeout_ms)
+        self._camera_socket.connect(address)
+
+    def recv_camera_frame(self) -> CameraFrame | None:
+        """Receive one RGBD frame from UE, or ``None`` on timeout / error.
+
+        Returns
+        -------
+        CameraFrame | None
+            A fully decoded :class:`~camera_signal.CameraFrame`, or
+            ``None`` if no frame arrived within the configured timeout.
+        """
+        if self._camera_socket is None:
+            return None
+        try:
+            parts = self._camera_socket.recv_multipart()
+            return CameraFrame.from_multipart(parts)
+        except Exception:
+            return None
+
+    # ------------------------------------------------------------------
+    # Lifecycle
+    # ------------------------------------------------------------------
+
+    def close(self) -> None:
+        """Close both the asset-state PUB and camera SUB sockets."""
+        if self._camera_socket is not None:
+            self._camera_socket.close()
+            self._camera_socket = None
+        super().close()
 
 
 def _is_human_asset(asset_name: str) -> bool:

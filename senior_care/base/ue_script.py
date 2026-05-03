@@ -33,6 +33,7 @@ import unreal  # type: ignore[import-not-found]
 
 from benchmark.senior_care.base.scene.ue_scene import (
     UeAssetSpec,
+    UeCameraSpec,
     UeScene,
 )
 
@@ -364,7 +365,8 @@ class UeAssetLoader:
         except Exception:
             pass
 
-        self._apply_default_material(actor, spec.name)
+        if not spec.use_imported_materials:
+            self._apply_material_overrides(actor, spec)
 
         unreal.log(
             f"[UeAssetLoader] spawned '{spec.name}' at "
@@ -383,7 +385,167 @@ class UeAssetLoader:
             bone_to_control_name=bone_to_control,
         )
 
+    # -- Camera spawning ----------------------------------------------------
+
+    def spawn_cameras(
+        self,
+        camera_specs: list[UeCameraSpec],
+    ) -> list[dict]:
+        """Spawn a ``CineCameraActor`` + two ``SceneCaptureComponent2D``
+        components (RGB and depth) for each camera described in ``camera_specs``.
+
+        Parameters
+        ----------
+        camera_specs : Parsed from the ``cameras:`` block of demo.yaml via
+            :class:`~scene.ue_scene.UeScene`.
+
+        Returns
+        -------
+        list of dict
+            One dict per camera with keys:
+            ``spec, actor, rt_rgb, rt_depth, cap_rgb, cap_depth``.
+            Pass this list to :func:`_build_tick_callback` in ``test_ue.py``
+            so the editor tick can capture + stream frames.
+        """
+        world = unreal.EditorLevelLibrary.get_editor_world()
+        spawned: list[dict] = []
+
+        for spec in camera_specs:
+            loc = unreal.Vector(*spec.position_cm)
+            rot = _quat_wxyz_to_unreal_rotator(spec.orientation_wxyz)
+
+            # Spawn a plain CameraActor (no physical-camera exposure
+            # simulation, so the preview widget just works).
+            camera_actor = self._actor_subsystem.spawn_actor_from_class(
+                unreal.CameraActor, loc, rot
+            )
+            if camera_actor is None:
+                unreal.log_warning(
+                    f"[UeAssetLoader] spawn_cameras: failed to spawn CameraActor "
+                    f"for '{spec.name}'"
+                )
+                continue
+            camera_actor.set_actor_label(f"SeniorCare_Camera_{spec.name}")
+
+            # Set FOV on the embedded CameraComponent.
+            try:
+                cam_comps = camera_actor.get_components_by_class(
+                    unreal.CameraComponent
+                )
+                if cam_comps:
+                    cam_comp = cam_comps[0]
+                    cam_comp.set_editor_property(
+                        "field_of_view", float(spec.fov)
+                    )
+                    cam_comp.set_editor_property(
+                        "constrain_aspect_ratio", False
+                    )
+            except Exception as exc:
+                unreal.log_warning(
+                    f"[UeAssetLoader] '{spec.name}': could not set FOV: {exc}"
+                )
+
+            # SceneCaptureComponent2D instances are spawned as standalone
+            # actors (CameraActor does not expose add_component_by_class
+            # in the Python binding) and attached to the camera actor so
+            # they follow its transform.
+
+            # ---- RGB capture actor ----------------------------------------
+            rt_rgb = unreal.RenderingLibrary.create_render_target2d(
+                world,
+                spec.width,
+                spec.height,
+                unreal.TextureRenderTargetFormat.RTF_RGBA8,
+            )
+            cap_rgb_actor = self._actor_subsystem.spawn_actor_from_class(
+                unreal.SceneCapture2D, loc, rot
+            )
+            cap_rgb_actor.set_actor_label(
+                f"SeniorCare_CaptureRGB_{spec.name}"
+            )
+            cap_rgb = cap_rgb_actor.capture_component2d
+            cap_rgb.set_editor_property(
+                "capture_source",
+                unreal.SceneCaptureSource.SCS_FINAL_COLOR_LDR,
+            )
+            cap_rgb.set_editor_property("texture_target", rt_rgb)
+            cap_rgb.set_editor_property("capture_every_frame", True)
+            cap_rgb.set_editor_property("capture_on_movement", False)
+            # USceneCaptureComponent::FOVAngle is exposed to Python as
+            # ``fov_angle`` (NOT ``field_of_view`` -- that's only on
+            # UCameraComponent). The custom-projection-matrix toggle defaults
+            # to false, so ``fov_angle`` is honored without us touching it.
+            cap_rgb.set_editor_property("fov_angle", float(spec.fov))
+            cap_rgb_actor.attach_to_actor(
+                camera_actor,
+                "",
+                unreal.AttachmentRule.SNAP_TO_TARGET,
+                unreal.AttachmentRule.SNAP_TO_TARGET,
+                unreal.AttachmentRule.SNAP_TO_TARGET,
+                False,
+            )
+
+            # ---- Depth capture actor ----------------------------------------
+            # Use RTF_RGBA16f (PF_FloatRGBA) instead of RTF_R32F: only the
+            # FloatRGBA family is reliably supported by
+            # FRenderTarget::ReadLinearColorPixels (and therefore
+            # RenderingLibrary.read_render_target_raw); single-channel R32F
+            # silently returns None on most RHIs. SCS_SCENE_DEPTH writes the
+            # depth value into the R channel either way, so we still read
+            # ``p.r`` on the MuJoCo side. 16-bit half float gives plenty of
+            # precision for the < 100 m scenes we capture.
+            rt_depth = unreal.RenderingLibrary.create_render_target2d(
+                world,
+                spec.width,
+                spec.height,
+                unreal.TextureRenderTargetFormat.RTF_RGBA16F,
+            )
+            cap_depth_actor = self._actor_subsystem.spawn_actor_from_class(
+                unreal.SceneCapture2D, loc, rot
+            )
+            cap_depth_actor.set_actor_label(
+                f"SeniorCare_CaptureDepth_{spec.name}"
+            )
+            cap_depth = cap_depth_actor.capture_component2d
+            cap_depth.set_editor_property(
+                "capture_source",
+                unreal.SceneCaptureSource.SCS_SCENE_DEPTH,
+            )
+            cap_depth.set_editor_property("texture_target", rt_depth)
+            cap_depth.set_editor_property("capture_every_frame", False)
+            cap_depth.set_editor_property("capture_on_movement", False)
+            # See note above: SceneCaptureComponent2D uses ``fov_angle``.
+            cap_depth.set_editor_property("fov_angle", float(spec.fov))
+            cap_depth_actor.attach_to_actor(
+                camera_actor,
+                "",
+                unreal.AttachmentRule.SNAP_TO_TARGET,
+                unreal.AttachmentRule.SNAP_TO_TARGET,
+                unreal.AttachmentRule.SNAP_TO_TARGET,
+                False,
+            )
+
+            unreal.log(
+                f"[UeAssetLoader] spawned camera '{spec.name}' at "
+                f"({loc.x:.1f}, {loc.y:.1f}, {loc.z:.1f}) cm, "
+                f"fov={spec.fov}°, res={spec.width}×{spec.height}"
+            )
+            spawned.append(
+                {
+                    "spec": spec,
+                    "actor": camera_actor,
+                    "rt_rgb": rt_rgb,
+                    "rt_depth": rt_depth,
+                    "cap_rgb": cap_rgb,
+                    "cap_depth": cap_depth,
+                }
+            )
+
+        return spawned
+
     # -- Material helpers ---------------------------------------------------
+
+    _TINTABLE_MAT_PATH: str = "/Game/SeniorCare/Materials/M_SeniorCare_Tintable"
 
     _DEFAULT_MAT_PATHS: list[str] = [
         "/Engine/BasicShapes/BasicShapeMaterial",
@@ -391,47 +553,190 @@ class UeAssetLoader:
         "/Engine/EngineMaterials/WorldGridMaterial",
     ]
 
-    def _apply_default_material(self, actor: Any, asset_name: str) -> None:
-        """Override every material slot on the PoseableMesh with a plain grey shader.
+    _BASE_COLOR_PARAM_NAMES: tuple[str, ...] = ("BaseColor", "Color")
 
-        Many FBX exports (especially from URDF pipelines) produce dozens of
-        placeholder material slots that import without a real shader, making
-        the mesh invisible in the viewport.  Overriding with an engine built-in
-        material guarantees the mesh is always visible right after spawning.
-        Per-instance material overrides do not touch the SkeletalMesh asset, so
-        this is fully non-destructive.
+    def _ensure_tintable_material_exists(self) -> Any | None:
+        """Return the tintable material at ``_TINTABLE_MAT_PATH``, creating
+        it on the fly if it does not yet exist in the Content Browser.
+
+        The created material has a single ``VectorParameter`` named
+        ``BaseColor`` (default white) wired to the Base Color pin, with
+        ``bUsedWithSkeletalMesh`` enabled so it works on PoseableMesh
+        components without a shader recompile on first draw.
         """
-        default_mat = None
+        try:
+            existing = self._editor_asset_lib.load_asset(self._TINTABLE_MAT_PATH)
+            if existing is not None and isinstance(existing, unreal.MaterialInterface):
+                return existing
+        except Exception:
+            pass
+
+        mel = getattr(unreal, "MaterialEditingLibrary", None)
+        if mel is None:
+            unreal.log_warning(
+                "[UeAssetLoader] MaterialEditingLibrary not available; "
+                "cannot auto-create tintable material"
+            )
+            return None
+
+        pkg_path = "/Game/SeniorCare/Materials"
+        asset_name = "M_SeniorCare_Tintable"
+        try:
+            mat_factory = unreal.MaterialFactoryNew()
+            mat = self._asset_tools.create_asset(
+                asset_name, pkg_path, unreal.Material, mat_factory,
+            )
+        except Exception as exc:
+            unreal.log_warning(
+                f"[UeAssetLoader] create_asset for tintable material failed: {exc}"
+            )
+            return None
+
+        if mat is None:
+            unreal.log_warning(
+                "[UeAssetLoader] create_asset returned None for tintable material"
+            )
+            return None
+
+        try:
+            mat.set_editor_property("used_with_skeletal_mesh", True)
+
+            param_expr = mel.create_material_expression(
+                mat, unreal.MaterialExpressionVectorParameter, -300, 0,
+            )
+            param_expr.set_editor_property("parameter_name", "BaseColor")
+            param_expr.set_editor_property(
+                "default_value", unreal.LinearColor(1.0, 1.0, 1.0, 1.0),
+            )
+            mel.connect_material_property(
+                param_expr, "", unreal.MaterialProperty.MP_BASE_COLOR,
+            )
+            mel.recompile_material(mat)
+            unreal.EditorAssetLibrary.save_asset(
+                self._TINTABLE_MAT_PATH, only_if_is_dirty=True,
+            )
+        except Exception as exc:
+            unreal.log_warning(
+                f"[UeAssetLoader] tintable material setup failed: {exc}"
+            )
+
+        unreal.log(
+            f"[UeAssetLoader] created tintable material at {self._TINTABLE_MAT_PATH}"
+        )
+        return mat
+
+    def _load_first_engine_fallback_material(self) -> Any | None:
+        tintable = self._ensure_tintable_material_exists()
+        if tintable is not None:
+            return tintable
         for path in self._DEFAULT_MAT_PATHS:
             try:
                 mat = self._editor_asset_lib.load_asset(path)
                 if mat is not None:
-                    default_mat = mat
-                    break
+                    self._ensure_material_used_with_skeletal_mesh(mat)
+                    return mat
             except Exception:
                 continue
-        if default_mat is None:
+        return None
+
+    @staticmethod
+    def _ensure_material_used_with_skeletal_mesh(mat: Any) -> None:
+        """Toggle ``bUsedWithSkeletalMesh`` on a UMaterial so it can shade
+        skeletal/poseable meshes without UE auto-fixing it on first draw.
+
+        The fallback engine materials (e.g. ``BasicShapeMaterial``) ship with
+        this flag off, which produces the
+        ``LogMaterial: ... needed to have new flag set bUsedWithSkeletalMesh``
+        Display log every editor session. We only set the in-memory flag;
+        we deliberately do NOT save the engine asset back to disk.
+        """
+        try:
+            base = mat.get_base_material() if hasattr(mat, "get_base_material") else mat
+        except Exception:
+            base = mat
+        if base is None or not isinstance(base, unreal.Material):
+            return
+        try:
+            if not base.get_editor_property("used_with_skeletal_mesh"):
+                base.set_editor_property("used_with_skeletal_mesh", True)
+        except Exception as exc:
             unreal.log_warning(
-                f"[UeAssetLoader] '{asset_name}': could not load any engine "
-                f"default material; mesh may be invisible"
+                f"[UeAssetLoader] could not toggle used_with_skeletal_mesh on "
+                f"'{base.get_path_name()}': {exc}"
+            )
+
+    def _resolve_parent_material_for_override(self, spec: UeAssetSpec) -> Any | None:
+        """Parent ``MaterialInterface`` for instance overrides (YAML or engine default)."""
+        if spec.ue_material_path:
+            try:
+                mat = self._editor_asset_lib.load_asset(spec.ue_material_path)
+            except Exception as exc:
+                unreal.log_warning(
+                    f"[UeAssetLoader] '{spec.name}': ue_material "
+                    f"'{spec.ue_material_path}' load failed: {exc}"
+                )
+                mat = None
+            if mat is not None and isinstance(mat, unreal.MaterialInterface):
+                unreal.log(
+                    f"[UeAssetLoader] '{spec.name}': using ue_material "
+                    f"{spec.ue_material_path}"
+                )
+                return mat
+            # Asset doesn't exist yet -- auto-create if it's our tintable path.
+            if spec.ue_material_path == self._TINTABLE_MAT_PATH:
+                tintable = self._ensure_tintable_material_exists()
+                if tintable is not None:
+                    unreal.log(
+                        f"[UeAssetLoader] '{spec.name}': auto-created tintable "
+                        f"material at {self._TINTABLE_MAT_PATH}"
+                    )
+                    return tintable
+            if mat is not None:
+                unreal.log_warning(
+                    f"[UeAssetLoader] '{spec.name}': ue_material path is not a "
+                    f"MaterialInterface, falling back to engine defaults"
+                )
+
+        return self._load_first_engine_fallback_material()
+
+    @staticmethod
+    def _poseable_mesh_from_actor(actor: Any) -> Any | None:
+        if hasattr(actor, "get_poseable_mesh"):
+            try:
+                pm = actor.get_poseable_mesh()
+                if pm is not None:
+                    return pm
+            except Exception:
+                pass
+        try:
+            comps = list(actor.get_components_by_class(unreal.PoseableMeshComponent))
+            return comps[0] if comps else None
+        except Exception:
+            return None
+
+    def _apply_material_overrides(self, actor: Any, spec: UeAssetSpec) -> None:
+        """Apply per-instance materials on the PoseableMesh (YAML-driven).
+
+        Without ``base_color``, every slot gets the same parent material (from
+        ``ue_material`` if set, otherwise a built-in default).  Many FBX
+        exports use empty placeholder slots; a real ``MaterialInterface``
+        makes the mesh visible.  With ``base_color``, we create a dynamic
+        material instance per slot and set ``BaseColor`` / ``Color`` when the
+        parent exposes that scalar/vector parameter.
+        """
+        parent = self._resolve_parent_material_for_override(spec)
+        if parent is None:
+            unreal.log_warning(
+                f"[UeAssetLoader] '{spec.name}': could not resolve any parent "
+                f"material; mesh may be invisible"
             )
             return
 
-        poseable = None
-        if hasattr(actor, "get_poseable_mesh"):
-            try:
-                poseable = actor.get_poseable_mesh()
-            except Exception:
-                pass
-        if poseable is None:
-            try:
-                comps = list(actor.get_components_by_class(unreal.PoseableMeshComponent))
-                poseable = comps[0] if comps else None
-            except Exception:
-                pass
+        poseable = self._poseable_mesh_from_actor(actor)
         if poseable is None:
             unreal.log_warning(
-                f"[UeAssetLoader] '{asset_name}': no PoseableMeshComponent for material override"
+                f"[UeAssetLoader] '{spec.name}': no PoseableMeshComponent "
+                f"for material override"
             )
             return
 
@@ -439,20 +744,63 @@ class UeAssetLoader:
             n = int(poseable.get_num_materials())
         except Exception as exc:
             unreal.log_warning(
-                f"[UeAssetLoader] '{asset_name}': get_num_materials failed: {exc}"
+                f"[UeAssetLoader] '{spec.name}': get_num_materials failed: {exc}"
             )
             return
 
+        rgba = spec.base_color
         applied = 0
+        tint_failed = 0
         for i in range(n):
             try:
-                poseable.set_material(i, default_mat)
-                applied += 1
-            except Exception:
-                pass
+                if rgba is not None:
+                    mid = poseable.create_dynamic_material_instance(i, parent)
+                    if mid is not None:
+                        lc = unreal.LinearColor(
+                            float(rgba[0]),
+                            float(rgba[1]),
+                            float(rgba[2]),
+                            float(rgba[3]),
+                        )
+                        tinted = False
+                        for pname in self._BASE_COLOR_PARAM_NAMES:
+                            try:
+                                mid.set_vector_parameter_value(pname, lc)
+                                tinted = True
+                                break
+                            except Exception:
+                                continue
+                        if tinted:
+                            applied += 1
+                        else:
+                            tint_failed += 1
+                    else:
+                        poseable.set_material(i, parent)
+                        applied += 1
+                else:
+                    poseable.set_material(i, parent)
+                    applied += 1
+            except Exception as exc:
+                unreal.log_warning(
+                    f"[UeAssetLoader] '{spec.name}': material slot {i} "
+                    f"override failed: {exc}"
+                )
+
+        if tint_failed > 0:
+            tried = ", ".join(self._BASE_COLOR_PARAM_NAMES)
+            unreal.log_warning(
+                f"[UeAssetLoader] '{spec.name}': base_color tint failed on "
+                f"{tint_failed}/{n} slot(s) -- parent material has no "
+                f"parameter named {tried}. Those slots remain untinted. "
+                f"Set ue_material to a material with a BaseColor "
+                f"VectorParameter or use use_imported_materials: true."
+            )
+
+        tint_note = f", base_color={rgba}" if rgba else ""
         unreal.log(
-            f"[UeAssetLoader] '{asset_name}': applied default material to "
-            f"{applied}/{n} slot(s)"
+            f"[UeAssetLoader] '{spec.name}': material override on "
+            f"{applied}/{n} slot(s){tint_note}"
+            + (f" ({tint_failed} tint failures)" if tint_failed else "")
         )
 
     @staticmethod
@@ -775,8 +1123,8 @@ def load_scene_for_editor(
     *,
     clear_existing: bool = True,
     apply_initial_state: bool = True,
-) -> tuple[UeScene, UeAssetLoader, UeJointDriver]:
-    """Load a YAML scene end-to-end and return the live driver.
+) -> tuple[UeScene, UeAssetLoader, UeJointDriver, list[dict]]:
+    """Load a YAML scene end-to-end and return the live driver + camera list.
 
     Steps performed for every asset listed in the YAML:
         0. (When ``clear_existing=True``, default) Delete every actor we
@@ -787,10 +1135,20 @@ def load_scene_for_editor(
            ``AMuJoCoSkeletalActor`` and configures the joint -> bone mapping.
         3. Register with the (deprecated) :class:`UeJointDriver` for
            any callers that still poke joints from Python.
+        4. ``UeAssetLoader.spawn_cameras`` -- spawns ``CineCameraActor``
+           instances with ``SceneCaptureComponent2D`` for every entry in the
+           YAML's ``cameras:`` block.
 
     ``apply_initial_state`` is preserved as a parameter for API
     compatibility but is now a no-op (the first MuJoCo frame establishes
     the initial pose).
+
+    Returns
+    -------
+    tuple
+        ``(scene, loader, driver, cameras)`` where ``cameras`` is the list
+        of camera dicts returned by :meth:`UeAssetLoader.spawn_cameras`
+        (empty list when no cameras are configured).
     """
     scene = UeScene.from_yaml(yaml_path)
     loader = UeAssetLoader()
@@ -810,6 +1168,15 @@ def load_scene_for_editor(
             )
             continue
 
+    cameras: list[dict] = []
+    if scene.cameras:
+        try:
+            cameras = loader.spawn_cameras(scene.cameras)
+        except Exception as exc:
+            unreal.log_error(
+                f"[load_scene_for_editor] camera spawning failed: {exc}"
+            )
+
     if apply_initial_state:
         driver.apply_initial_state()
     else:
@@ -817,13 +1184,14 @@ def load_scene_for_editor(
             "[load_scene_for_editor] apply_initial_state=False; "
             "skipping initial-state push (which is a no-op anyway now)."
         )
-    return scene, loader, driver
+    return scene, loader, driver, cameras
 
 
 __all__ = [
     "CONTENT_ROOT",
     "RIG_ROOT",
     "UeAssetLoader",
+    "UeCameraSpec",
     "UeJointDriver",
     "load_scene_for_editor",
 ]

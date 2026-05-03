@@ -8,6 +8,9 @@ assets:
     fix_base: true
     disable_gravity: true
     scale: 1
+    # Keep the multi-slot materials shipped inside the FBX (black joints +
+    # white arm links) instead of overriding everything with a single tint.
+    use_imported_materials: true
     root:
       position: [0.0, -0.2, 0.8]
       orientation: [1, 0.0, 0.0, 0]
@@ -48,6 +51,10 @@ assets:
     fix_base: false
     disable_gravity: false
     scale: 1
+    # Tintable material created by the plugin; BaseColor parameter is driven
+    # by the base_color value below via a dynamic material instance.
+    ue_material: "/Game/SeniorCare/Materials/M_SeniorCare_Tintable"
+    base_color: [0.92, 0.77, 0.62]  # approximate skin tone
     root:
       position: [0.65, 0.0, 0.75]
       orientation: [0.0, 0.0, 0.0, 1.0]
@@ -108,6 +115,35 @@ assets:
       kp: []
       kd: []
       behavior_of_unspecified: "free" # "fix" or "free"
+
+cameras:
+  # Each camera entry supports either:
+  #   * orientation: [w, x, y, z]   -- explicit quaternion (legacy), OR
+  #   * look_at: [x, y, z]          -- explicit world point (metres), OR
+  #   * look_at: <asset_name>       -- look at that asset's root, OR
+  #   * look_at: [<a>, <b>, ...]    -- look at the centroid of those assets.
+  # Optional ``up: [x, y, z]`` overrides the default world-up hint (+Z).
+  - name: front_view
+    # Slightly elevated, in front of the scene.
+    position: [0.0, -2.5, 1.6]
+    # Frame both the Franka robot and the human together.
+    look_at: [franka_emika_panda, simpl_neutral]
+    width: 640
+    height: 480
+    fov: 90.0
+
+  - name: top_view
+    # Bird's-eye camera looking straight down onto the workspace.
+    position: [0.3, 0.0, 3.0]
+    look_at: [0.3, 0.0, 0.8]
+    # ``up`` defaults to world +Z; for a top-down camera that gives a
+    # singular basis (forward parallel to up), so override ``up`` to point
+    # along world +Y so the resulting "up" in the rendered image is
+    # MuJoCo +Y (== UE -Y, i.e. towards the back of the scene).
+    up: [0.0, 1.0, 0.0]
+    width: 640
+    height: 480
+    fov: 75.0
 
 observation:
   - franka_emika_panda

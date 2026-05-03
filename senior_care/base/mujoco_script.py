@@ -179,6 +179,8 @@ class SeniorCareEnv:
         zenoh_connect_endpoints: Sequence[str] | None = None,
         zmq_publish: bool = False,
         zmq_address: str = "tcp://localhost:5556",
+        view_camera: bool = False,
+        zmq_camera_address: str = "tcp://localhost:5557",
     ) -> None:
         self.config_path = self._resolve_path(config_path)
         self.config = yaml.safe_load(self.config_path.read_text()) or {}
@@ -208,6 +210,7 @@ class SeniorCareEnv:
         self._human_zenoh_asset: str | None = None
 
         self._zmq_session: Any | None = None
+        self._view_camera = view_camera
 
         self.scene: MujocoScene | None = None
         self.model = self._build_model()
@@ -227,6 +230,8 @@ class SeniorCareEnv:
 
             self._zmq_session = MujocoZmqSession(zmq_address)
             self._zmq_session.open_pub()
+            if view_camera:
+                self._zmq_session.open_camera_sub(zmq_camera_address)
 
     def reset(self) -> dict[str, dict[str, object]]:
         self.data = mujoco.MjData(self.model)
@@ -313,6 +318,10 @@ class SeniorCareEnv:
             self._zenoh_publish_step(action_message)
         if self._zmq_session is not None:
             self._zmq_session.publish_step(self.model, self.data, self.assets)
+        if self._view_camera and self._zmq_session is not None:
+            camera_frame = self._zmq_session.recv_camera_frame()
+            if camera_frame is not None:
+                self._show_camera_frame(camera_frame)
         return obs_dict
 
     def close(self) -> None:
@@ -328,6 +337,45 @@ class SeniorCareEnv:
         if self._zmq_session is not None:
             self._zmq_session.close()
             self._zmq_session = None
+
+    def _show_camera_frame(self, frame: Any) -> None:
+        """Display an RGBD camera frame in OpenCV windows.
+
+        Shows two windows per camera:
+        - ``[RGB] <name>`` — colour image (BGR for OpenCV).
+        - ``[Depth] <name>`` — depth normalised to uint8 for visualisation;
+          black = no geometry (sky / beyond far-plane), bright = close.
+
+        Requires ``opencv-python`` (``pip install opencv-python``).
+        Silently skips if cv2 is not installed.
+        """
+        try:
+            import cv2
+        except ImportError:
+            _LOG.warning(
+                "[SeniorCareEnv] view_camera=True but 'opencv-python' is not "
+                "installed; skipping camera display. "
+                "Install with: pip install opencv-python"
+            )
+            self._view_camera = False  # suppress repeated warnings
+            return
+
+        rgb = frame.rgb_array()  # (H, W, 3) uint8, RGB order
+        rgb_bgr = rgb[..., ::-1]  # flip to BGR for OpenCV
+        cv2.imshow(f"[RGB] {frame.camera_name}", rgb_bgr)
+
+        depth = frame.depth_array()  # (H, W) float32, metres
+        valid = depth > 0.0
+        d_vis = np.zeros(depth.shape, dtype=np.uint8)
+        if valid.any():
+            d_min = float(depth[valid].min())
+            d_max = float(depth[valid].max())
+            if d_max > d_min:
+                d_vis[valid] = (
+                    (depth[valid] - d_min) / (d_max - d_min) * 255
+                ).astype(np.uint8)
+        cv2.imshow(f"[Depth] {frame.camera_name}", d_vis)
+        cv2.waitKey(1)
 
     def _pick_zenoh_asset_names(self) -> None:
         for name in self.action_asset_names:

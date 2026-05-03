@@ -2,15 +2,21 @@
 
 Handles context lifecycle and provides helpers for send/recv JSON frames.
 Subclasses (MujocoZmqSession, UeZmqSession) add domain-specific logic.
+
+``import zmq`` is intentionally deferred to the first call that actually
+opens a socket so this module can be imported in environments where the
+``zmq`` package is not installed (e.g. UE's embedded Python when only
+``camera_signal`` / ``UeZmqSession`` are needed).
 """
 
 from __future__ import annotations
 
 import json
 import os
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
-import zmq
+if TYPE_CHECKING:
+    import zmq
 
 
 class ZmqSession:
@@ -23,8 +29,16 @@ class ZmqSession:
 
     def __init__(self, address: str = "tcp://localhost:5556") -> None:
         self._address = address
-        self._context: zmq.Context | None = zmq.Context()
+        # Context and socket are created lazily on first open_pub / open_sub call.
+        self._context: zmq.Context | None = None
         self._socket: zmq.Socket | None = None
+
+    def _get_context(self) -> zmq.Context:
+        """Return (and lazily create) the ZMQ context."""
+        if self._context is None:
+            import zmq as _zmq
+            self._context = _zmq.Context()
+        return self._context
 
     # -- PUB helpers -------------------------------------------------------
 
@@ -35,11 +49,12 @@ class ZmqSession:
         ``SENIOR_CARE_ZMQ_BIND`` is checked (``"1"`` → bind, ``"0"`` → connect);
         default is **bind**.
         """
+        import zmq as _zmq
+
         if bind is None:
             bind = os.environ.get("SENIOR_CARE_ZMQ_BIND", "1") != "0"
 
-        assert self._context is not None
-        self._socket = self._context.socket(zmq.PUB)
+        self._socket = self._get_context().socket(_zmq.PUB)
         if bind:
             self._socket.bind(self._address)
         else:
@@ -49,10 +64,11 @@ class ZmqSession:
 
     def open_sub(self, *, recv_timeout_ms: int = 100) -> None:
         """Create a SUB socket that *connects* to the PUB address."""
-        assert self._context is not None
-        self._socket = self._context.socket(zmq.SUB)
-        self._socket.setsockopt(zmq.SUBSCRIBE, b"")
-        self._socket.setsockopt(zmq.RCVTIMEO, recv_timeout_ms)
+        import zmq as _zmq
+
+        self._socket = self._get_context().socket(_zmq.SUB)
+        self._socket.setsockopt(_zmq.SUBSCRIBE, b"")
+        self._socket.setsockopt(_zmq.RCVTIMEO, recv_timeout_ms)
         self._socket.connect(self._address)
 
     # -- I/O ---------------------------------------------------------------
@@ -69,8 +85,25 @@ class ZmqSession:
         try:
             raw = self._socket.recv()
             return json.loads(raw)
-        except zmq.Again:
+        except Exception:
+            # zmq.Again (timeout) and any other error both return None.
             return None
+
+    def send_multipart(self, parts: list[bytes]) -> None:
+        """Send a multipart message through the PUB socket.
+
+        Used for RGBD camera frames where each part carries a different
+        data type (JSON header, raw RGB bytes, raw depth bytes).
+        """
+        assert self._socket is not None, "call open_pub() first"
+        self._socket.send_multipart(parts)
+
+    def recv_multipart(self) -> list[bytes] | None:
+        """Non-blocking multipart receive; returns list of byte frames or ``None``."""
+        if self._socket is None:
+            return None
+        try:
+            return self._socket.recv_multipart()
         except Exception:
             return None
 
